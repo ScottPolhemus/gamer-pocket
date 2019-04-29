@@ -13,7 +13,10 @@ const ControlsProvider = ({children}) => {
   const [keysDown, setKeysDown] = useState([])
   const [pressed, setPressed] = useState([])
   const [prevPressed, setPrevPressed] = useState([])
+
+  const contextValue = {pressed, groupRefs}
   
+  // Generate list of pressed controls based on current touches and keys down
   useEffect(() => {
     const touchPressedControls = touches.reduce((arr, t) => {
       const tX = t.clientX
@@ -62,6 +65,7 @@ const ControlsProvider = ({children}) => {
     setPressed(_.uniq(touchPressedControls.concat(keyPressedControls)))
   }, [touches, keysDown])
   
+  // Call player APIs to press/unpress buttons on changes to pressed controls
   useEffect(() => {
     if (gameboy.current) {
       _.difference(pressed, prevPressed).forEach((button) => gameboy.current.buttonDown(button))
@@ -71,6 +75,7 @@ const ControlsProvider = ({children}) => {
     setPrevPressed(pressed)
   }, [pressed])
   
+  // Handle touch start events
   const onTouchStart = useCallback((event) => {
     if (!event.target.matches(`[data-screen], [data-screen] *, [role="listbox"], [role="listbox"] *`)) {
       event.preventDefault()
@@ -88,6 +93,7 @@ const ControlsProvider = ({children}) => {
     })
   }, [])
 
+  // Handle touch move events
   const onTouchMove = useCallback((event) => {
     setTouches((currentTouches) => {
       let newTouches = currentTouches.slice(0)
@@ -108,6 +114,7 @@ const ControlsProvider = ({children}) => {
     })
   }, [])
 
+  // Handle touch end/cancel events
   const onTouchEnd = useCallback((event) => {
     const cancelledIds = _.map(event.changedTouches, (t) => t.identifier);
     
@@ -116,32 +123,35 @@ const ControlsProvider = ({children}) => {
     })
   }, [])
 
+  // Handle key down events
   const onKeyDown = useCallback((event) => {
-    setKeysDown((currentKeysDown) => {
-      if (currentKeysDown.includes(event.keyCode)) {
-        return currentKeysDown
-      }
-      
-      return _.uniq([...currentKeysDown, event.keyCode])
-    })
+    setKeysDown((currentKeysDown) => (
+      currentKeysDown.includes(event.keyCode) ? (
+        currentKeysDown
+      ) : (
+        _.uniq([...currentKeysDown, event.keyCode])
+      )
+    ))
   }, [])
 
+  // Handle key up events
   const onKeyUp = useCallback((event) => {
-    setKeysDown((currentKeysDown) => {
-      if (!currentKeysDown.includes(event.keyCode)) {
-        return currentKeysDown
-      }
-      
-      return currentKeysDown.filter((k => k !== event.keyCode))
-    })
+    setKeysDown((currentKeysDown) => (
+      !currentKeysDown.includes(event.keyCode) ? (
+        currentKeysDown
+      ) : (
+        _.filter(currentKeysDown, (k => k !== event.keyCode))
+      )
+    ))
   }, [])
 
-  const onResize = useCallback((event) => {
-    setTouches([])
-  }, [])
+  // Handle resize events
+  const onResize = useCallback(() => setTouches([]), [])
   
+  // Handle gesture start/end events
   const cancelGesture = useCallback((event) => event.preventDefault(), [])
   
+  // Bind event listeners to doucment and window
   useEffect(() => {
     document.addEventListener('touchstart', onTouchStart, { passive: false })
     document.addEventListener('touchmove', onTouchMove)
@@ -171,7 +181,7 @@ const ControlsProvider = ({children}) => {
   }, [])
   
   return (
-    <ControlsContext.Provider value={{pressed, groupRefs}}>
+    <ControlsContext.Provider value={contextValue}>
       {children}
     </ControlsContext.Provider>
   )

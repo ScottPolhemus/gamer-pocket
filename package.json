@@ -11,7 +11,7 @@
     "static": "npm run export && npm run serve"
   },
   "dependencies": {
-    "gameboy": "https://github.com/ScottPolhemus/gameboy.git#2f7fee7947501ae645ab2b1d48cbee5235bcad8e",
+    "gameboy": "https://github.com/ScottPolhemus/gameboy.git#f9eecc422a5de89620c6e2a7aaedc122a17fafcc",
     "next": "^8.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

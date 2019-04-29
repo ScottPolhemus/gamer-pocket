@@ -5,6 +5,7 @@ import { stringToArrayBuffer } from '../lib/file'
 import { PlayerContext } from '../lib/player'
 import FileInput from './FileInput'
 import DownloadButton from './DownloadButton'
+import MuteButton from './MuteButton'
 
 const PausedContainer = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const PausedContainer = styled.div`
 `
 
 const GamePaused = () => {
-  const {loadSRAM} = useContext(PlayerContext)
+  const {loadSRAM, restart} = useContext(PlayerContext)
   return (
     <PausedContainer>
       <p>Paused</p>
@@ -31,7 +32,11 @@ const GamePaused = () => {
         }}
       />
       <DownloadButton />
-      <button onClick={() => window.location = window.location.href}>Restart</button>
+      <MuteButton />
+      <button onClick={(e) => {
+        e.stopPropagation()
+        restart()
+      }}>Restart</button>
     </PausedContainer>
   )
 }

@@ -18,22 +18,25 @@ const PlayerProvider = ({
   const [game, setGame] = useState()
   const [playing, setPlaying] = useState(false)
   const [paused, setPaused] = useState(false)
+  const [muted, setMuted] = useState(false)
   const screenCanvasRef = useRef()
   const gameboy = useRef(null)
   
   useEffect(() => {
     gameboy.current = new GameBoy(screenCanvasRef.current)
     
-    gameboy.current.storage.findValue(`FREEZE_${currentGame}`)
-      .then(() => {
-      setHasFreeze(true)
-    })
+    if (currentGame) {
+      gameboy.current.storage.findValue(`FREEZE_${currentGame}`)
+        .then(() => {
+        setHasFreeze(true)
+      })
+    }
   }, [])
   
   useEffect(() => {
     const onVisibilityChange = async () => {
       if (document.visibilityState === 'hidden' && playing && !paused) {
-        await gameboy.current.saveGame()
+        await gameboy.current.freeze()
       }
     }
     
@@ -44,24 +47,27 @@ const PlayerProvider = ({
     }
   })
   
-  const onChangeROMImage = async () => {
-    if (!ROMImage) { return }
-
-    await gameboy.current.loadROM(ROMImage)
-    setGame(gameboy.current.core.name)
-  }
-  
   useEffect(() => {
-    onChangeROMImage()
+    if (ROMImage) {
+      gameboy.current.loadROM(ROMImage)
+        .then(() => {
+          setGame(gameboy.current.core.name)
+        })
+    }
+      
   }, [ROMImage])
   
   const start = useCallback(() => {
-    return gameboy.current.start()
-      .then(() => {
-        setPlaying(true)
-        setPaused(false)
-      })
-  }, [ROMImage, game])
+    gameboy.current.start()
+    setPlaying(true)
+    setPaused(false)
+  }, [])
+
+  const restart = useCallback(() => {
+    const currentROM = gameboy.current.core.getROMImage()
+    gameboy.current.core.reset();
+    gameboy.current.loadROM(currentROM).then(start);
+  })
   
   const resume = useCallback(() => {
     return gameboy.current.openState(`FREEZE_${currentGame}`)
@@ -93,11 +99,22 @@ const PlayerProvider = ({
     const sram = gameboy.current.core.fromTypedArray(new Uint8Array(data))
     
     return gameboy.current.storage.setValue(`SRAM_${game}`, sram)
-      .then(async () => {
-      // await gameboy.current.loadROM(ROMImage)
-      // run()
-    })
+      .then(restart)
   }, [game])
+
+  const mute = useCallback(() => {
+    if (!muted && gameboy.current) {
+      setMuted(true)
+      gameboy.current.core.audioHandle.changeVolume(0);
+    }
+  })
+
+  const unMute = useCallback(() => {
+    if (muted && gameboy.current) {
+      setMuted(false)
+      gameboy.current.core.audioHandle.changeVolume(0.5);
+    }
+  })
   
   return (
     <PlayerContext.Provider
@@ -113,9 +130,13 @@ const PlayerProvider = ({
         paused,
         screenCanvasRef,
         start,
+        restart,
         resume,
         pause,
-        run
+        run,
+        muted,
+        mute,
+        unMute,
       }}
     >
       {children}
