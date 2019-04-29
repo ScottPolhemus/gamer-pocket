@@ -1,2 +1,3 @@
-# gamer-pocket
+# Gamer Pocket
+
 GB/GBC emulator front-end

@@ -1,0 +1,14 @@
+{
+  "install": {
+    "include": [
+      "package.json"
+    ]
+  },
+  "restart": {
+    "include": [
+      ".env",
+      ".babelrc"
+    ]
+  },
+  "throttle": 250
+}
