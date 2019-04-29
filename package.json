@@ -1,0 +1,39 @@
+{
+  "name": "nextjs-starter",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "if [[ $NEXT_ENV == 'production' ]]; then npm run prod; elif [[ $NEXT_ENV == 'static' ]]; then npm run static; else npm run dev; fi",
+    "dev": "next",
+    "prod": "next start",
+    "prod:build": "next build && next start",
+    "export": "next build && next export -o ./.dist",
+    "serve": "serve ./.dist",
+    "static": "npm run export && npm run serve"
+  },
+  "dependencies": {
+    "gameboy": "https://github.com/ScottPolhemus/gameboy.git#2f7fee7947501ae645ab2b1d48cbee5235bcad8e",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "lodash": "^4.17.11",
+    "styled-components": "^4.2.0",
+    "babel-plugin-styled-components": "^1.10.0",
+    "sat": "^0.7.1",
+    "canvas": "^2.4.1",
+    "react-cookie": "^3.1.2",
+    "next-cookies": "^1.1.2",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.1",
+    "react-jss": "^8.6.1",
+    "jss": "^9.8.7",
+    "color-name": "^1.1.4",
+    "@babel/polyfill": "^7.0.0"
+  },
+  "devDependencies": {
+    "serve": "^10.1.2"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "license": "MIT"
+}

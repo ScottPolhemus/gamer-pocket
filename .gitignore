@@ -1,0 +1,5 @@
+.next
+.config
+.data
+node_modules
+dist
