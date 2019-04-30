@@ -1,5 +1,8 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
 import { stringToArrayBuffer } from '../lib/file'
 import { PlayerContext } from '../lib/player'
@@ -13,14 +16,41 @@ const PausedContainer = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
+  text-align: center;
+`
+
+const PausedTitle = styled(Typography)`
+  margin-bottom: 8px;
 `
 
 const GamePaused = () => {
-  const {loadSRAM, restart} = useContext(PlayerContext)
+  const {loadSRAM, restart, stop} = useContext(PlayerContext)
   return (
     <PausedContainer>
-      <p>Paused</p>
-      <FileInput
+      <PausedTitle>Paused - Tap screen to resume</PausedTitle>
+      <Grid container spacing={16}>
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={(e) => {
+              e.stopPropagation()
+              restart()
+            }}
+          >Restart</Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={(e) => {
+              e.stopPropagation()
+              stop()
+            }}
+          >Change ROM</Button>
+        </Grid>
+      </Grid>
+      {/*<FileInput
         label="Import Save"
         accept=".sav"
         onChangeFile={(file) => {
@@ -36,7 +66,7 @@ const GamePaused = () => {
       <button onClick={(e) => {
         e.stopPropagation()
         restart()
-      }}>Restart</button>
+      }}>Restart</button>*/}
     </PausedContainer>
   )
 }

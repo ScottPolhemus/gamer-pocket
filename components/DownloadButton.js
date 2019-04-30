@@ -11,7 +11,7 @@ const HiddenDownloadLink = styled.a`
 const DownloadButton = () => {
   const anchorRef = useRef()
   const [href, setHref] = useState('')
-  const { game, getSRAM } = useContext(PlayerContext)
+  const { currentGame, getSRAM } = useContext(PlayerContext)
   
   const onClick = async () => {
     const sram = await getSRAM()
@@ -27,7 +27,7 @@ const DownloadButton = () => {
   return (
     <div onClick={(e) => e.stopPropagation()}>
       <button onClick={onClick}>Download</button>
-      <HiddenDownloadLink ref={anchorRef} href={href} download={`${game}.sav`}/>
+      <HiddenDownloadLink ref={anchorRef} href={href} download={`${currentGame}.sav`}/>
     </div>
   )
 }
