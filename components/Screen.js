@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { findDOMNode } from 'react-dom'
 import { useCookies } from 'react-cookie'
 import styled, { css } from 'styled-components'
 import _ from 'lodash'
@@ -44,7 +45,7 @@ const ScreenInner = styled.div`
   }
 
   ${(props) => (!props.playing || props.paused) && css`
-    background: black;
+    background: #303030;
   `}
 `
 
@@ -80,7 +81,7 @@ const ScreenCanvas = styled.canvas`
 
   ${(props) => props.paused && css`
     filter: blur(16px);
-    opacity: 0.4;
+    opacity: 0.5;
   `}
 `
 
@@ -90,10 +91,12 @@ const Screen = ({
   const [{color = 'rebeccapurple'}] = useCookies()
   const {
     screenCanvasRef,
+    freezeScreen,
     playing,
     paused,
     pause,
     run,
+    resume
   } = useContext(PlayerContext)
   
   let onClick
@@ -104,7 +107,15 @@ const Screen = ({
     } else {
       onClick = run
     }
+  } else if (paused) {
+    onClick = resume
   }
+  
+  useEffect(() => {
+    if (freezeScreen && paused && !playing && screenCanvasRef.current) {
+      findDOMNode(screenCanvasRef.current).getContext('2d').putImageData(freezeScreen, 0, 0)
+    }
+  }, [playing, paused, freezeScreen])
   
   return (
     <ScreenWrapper>
@@ -114,12 +125,14 @@ const Screen = ({
         playing={playing}
         onClick={onClick}
       >
-        {playing ? (
-          paused && <ScreenContent>
+        {paused ? (
+          <ScreenContent>
             <GamePaused />
           </ScreenContent>
         ) : (
-          <ScreenContent>{children}</ScreenContent>
+          !playing && (
+            <ScreenContent>{children}</ScreenContent>
+          )
         )}
         <ScreenCanvas
           data-screen
