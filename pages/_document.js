@@ -4,20 +4,16 @@ import { ServerStyleSheet } from 'styled-components'
 export default class extends Document {
   static async getInitialProps (ctx) {
     const sheet = new ServerStyleSheet()
-    let muiClient
-    
+    let muiContext
+
     try {
       const initialProps = ctx.renderPage(
         Component => props => {
-          muiClient = props.muiClient
-          
-          return sheet.collectStyles(
-            <Component {...props} />
-          )
+          muiContext = props.muiContext
+          return sheet.collectStyles(<Component {...props} />)
         }
       )
-      
-      const serverJss = muiClient ? muiClient.sheetsRegistry.toString() : ''
+      const serverJss = muiContext ? muiContext.sheetsRegistry.toString() : ''
 
       return {
         ...initialProps,
@@ -38,12 +34,12 @@ export default class extends Document {
       sheet.seal()
     }
   }
-  
+
   render() {
     return (
       <Html>
         <Head>
-          <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover, user-scalable=no" />
+          <meta name="viewport" content="width=device-width, viewport-fit=cover" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>

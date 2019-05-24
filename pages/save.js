@@ -1,14 +1,14 @@
 import LoadingGate from '../components/LoadingGate'
-import Settings from '../components/Settings'
+import SaveOptions from '../components/SaveOptions'
 import FooterActions, { BackButton } from '../components/FooterActions'
 
-const SettingsPage = () => (
+const SavePage = () => (
   <LoadingGate>
-    <Settings />
+    <SaveOptions />
     <FooterActions>
       <BackButton />
     </FooterActions>
   </LoadingGate>
 )
 
-export default SettingsPage
+export default SavePage

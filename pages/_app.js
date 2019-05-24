@@ -1,49 +1,58 @@
-import '@babel/polyfill'
 import React from 'react'
-import App, { Container as NextContainer } from 'next/app'
+import App, { Container } from 'next/app'
 import nextCookies from 'next-cookies'
+import { CookiesProvider, Cookies } from 'react-cookie'
 
-import AppContainer from '../components/AppContainer'
-import getMuiClient from '../lib/mui'
+import getMuiContext from '../lib/mui'
+import { SettingsProvider } from '../lib/settings'
+import Player from '../components/Player'
 
 export default class extends App {
   static async getInitialProps({ Component, ctx }) {
+    const cookies = nextCookies(ctx)
     let pageProps = {}
-    
+
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
-    
-    const cookies = nextCookies(ctx)
-    
+
     return {
       cookies,
       pageProps
     }
   }
-  
+
   constructor() {
     super()
-    
-    this.muiClient = getMuiClient()
+
+    this.muiContext = getMuiContext()
   }
-  
+
+  componentDidMount() {
+    const serverJSS = document.querySelector('#server-jss');
+
+    if (serverJSS && serverJSS.parentNode) {
+      serverJSS.parentNode.removeChild(serverJSS);
+    }
+  }
+
   render() {
     const {
       Component,
       cookies,
       pageProps
     } = this.props
-    
+
     return (
-      <NextContainer>
-        <AppContainer
-          cookies={cookies}
-          muiClient={this.muiClient}
-        >
-          <Component muiClient={this.muiClient} {...pageProps} />
-        </AppContainer>
-      </NextContainer>
+      <Container>
+        <CookiesProvider cookies={new Cookies(cookies)}>
+          <SettingsProvider>
+            <Player muiContext={this.muiContext}>
+              <Component muiContext={this.muiContext} {...pageProps} />
+            </Player>
+          </SettingsProvider>
+        </CookiesProvider>
+      </Container>
     )
   }
 }

@@ -1,15 +1,27 @@
 import React from 'react'
-import Head from 'next/head'
 
-import Start from '../components/Start'
+import { usePlayer } from '../lib/player'
+import LoadingGate from '../components/LoadingGate'
+import SelectGame from '../components/SelectGame'
+import PauseMenu from '../components/PauseMenu'
+import FooterActions, {
+  MuteButton,
+  SettingsButton,
+  SaveButton,
+} from '../components/FooterActions'
+const IndexPage = () => {
+  const { initialized, loadedGame, currentGame, playing, paused } = usePlayer()
 
-const Index = () => (
-  <>
-    <Head>
-      <title>Gamer Pocket</title>
-    </Head>
-    <Start />
-  </>
-)
+  return (
+    <LoadingGate>
+      {paused ? <PauseMenu /> : <SelectGame />}
+      <FooterActions>
+        {initialized && <SettingsButton />}
+        {initialized && (loadedGame || currentGame) && <SaveButton />}
+        {playing && <MuteButton />}
+      </FooterActions>
+    </LoadingGate>
+  )
+}
 
-export default Index
+export default IndexPage
