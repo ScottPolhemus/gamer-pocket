@@ -47,6 +47,7 @@ export const ControlOutline = styled.span`
   display: block;
   z-index: -1;
   background: black;
+  transition: 100ms;
 
   ${(props) => props.type === 'circle' && css`
     top: ${100 * ((props.pos.y - props.pos.r) / props.size.height)}%;
@@ -66,5 +67,6 @@ export const ControlOutline = styled.span`
 
   ${(props) => props.pressed && css`
     background: white;
+    transition: 25ms;
   `}
 `

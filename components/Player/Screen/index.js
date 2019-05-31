@@ -60,7 +60,7 @@ const Screen = ({
             {children}
           </ScreenContent>
         )}
-        {(playing && !paused) && <ScreenOverlay filter={screenFilter} />}
+        <ScreenOverlay filter={screenFilter} playing={playing} paused={paused} />
         <ScreenCanvas
           ref={screenCanvasRef}
           width="160"

@@ -5,6 +5,14 @@ export const BaseStyle = createGlobalStyle`
     html, body {
       background: ${props.color};
     }
+
+    body {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
   `}
 `
 
@@ -17,6 +25,5 @@ export const PlayerContainer = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  width: 100vw;
-  height: 100vh;
+  bottom: 0;
 `
