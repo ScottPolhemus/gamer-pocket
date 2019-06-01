@@ -1,18 +1,28 @@
 import styled, { css } from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 
-const screenVertical = `(min-width: 650px)`
-const screen3x = `(min-width: 830px) and (min-height: 500px)`
-const screen4x = `(min-width: 1024px) and (min-height: 768px)`
+import {
+  screenHorizontal,
+  screen3x,
+  screen4x,
+  screenVertical3x,
+} from '../../../css/mq'
 
 export const ScreenContainer = styled.div`
+  display: flex;
+  justify-content: center;
   position: relative;
   width: 100%;
   order: 0;
 
-  @media ${screenVertical} {
+  @media ${screenHorizontal} {
     width: auto;
     order: 1;
+  }
+
+  @media ${screenVertical3x} {
+    width: 100%;
+    order: 0;
   }
 `
 
@@ -20,14 +30,18 @@ export const ScreenBorder = styled.div`
   position: relative;
   width: 320px;
   height: 288px;
-  margin: auto;
   border: 8px solid black;
   border-bottom-width: 32px;
   border-radius: 8px;
   box-sizing: content-box;
   z-index: 1;
 
-  @media ${screen3x} {
+  @media (max-width: 336px) {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+
+  @media ${screen3x}, ${screenVertical3x} {
     width: 480px;
     height: 432px;
   }
@@ -80,7 +94,7 @@ export const ScreenOverlay = styled.span`
     background-size: 2px 2px;
     background-image: linear-gradient(rgba(0,0,0,0.125), rgba(0,0,0,0.125) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.125) 75%, rgba(0,0,0,0.125)), linear-gradient(90deg, rgba(0,0,0,0.125), rgba(0,0,0,0.125) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.125) 75%, rgba(0,0,0,0.125));
 
-    @media ${screen3x} {
+    @media ${screen3x}, ${screenVertical3x} {
       background-size: 3px 3px;
     }
 

@@ -1,5 +1,12 @@
 import styled, { css } from 'styled-components'
 
+import {
+  screenHorizontal,
+  screen3x,
+  screen4x,
+  screenVertical3x,
+} from '../../../css/mq'
+
 export const ControlsContainer = styled.div`
   position: relative;
   display: flex;
@@ -8,10 +15,18 @@ export const ControlsContainer = styled.div`
 
   ${(props) => props.position === 'left' && css`
     order: 1;
+
+    @media ${screenVertical3x} {
+      margin-left: 48px;
+    }
   `}
 
   ${(props) => props.position === 'right' && css`
     order: 2;
+
+    @media ${screenVertical3x} {
+      margin-right: 48px;
+    }
   `}
 
   ${(props) => props.position === 'bottom' && css`
