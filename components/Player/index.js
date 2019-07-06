@@ -1,10 +1,9 @@
 import React, { useRef } from 'react'
-import JssProvider from 'react-jss/lib/JssProvider'
-import { MuiThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { StylesProvider, ThemeProvider } from '@material-ui/styles'
 
 import { ControlsProvider, controlsConfig } from '../../lib/controls'
-import { createTheme } from '../../lib/mui'
+import { createTheme } from '../../lib/theme'
 import { PlayerProvider } from '../../lib/player'
 import { useSettings } from '../../lib/settings'
 import Controls from './Controls'
@@ -19,12 +18,8 @@ const Player = ({
   const theme = createTheme({color})
 
   return (
-    <JssProvider
-      generateClassName={muiContext.generateClassName}
-      jss={muiContext.jss}
-      registry={muiContext.sheetsRegistry}
-    >
-      <MuiThemeProvider theme={theme} sheetsManager={muiContext.sheetsManager}>
+    <StylesProvider injectFirst>
+      <ThemeProvider theme={theme}>
         <PlayerProvider>
           <ControlsProvider>
             <CssBaseline />
@@ -37,8 +32,8 @@ const Player = ({
             </PlayerContainer>
           </ControlsProvider>
         </PlayerProvider>
-      </MuiThemeProvider>
-    </JssProvider>
+      </ThemeProvider>
+    </StylesProvider>
   )
 }
 

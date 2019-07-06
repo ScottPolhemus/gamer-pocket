@@ -4,6 +4,7 @@ const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
 
+const handleAppIconRequest = require('./api/app-icon')
 const handleDownloadRequest = require('./api/download')
 
 const app = next({
@@ -17,7 +18,9 @@ app.prepare().then(() => {
     const parsedUrl = parse(req.url, true)
     const { pathname, query } = parsedUrl
 
-    if (pathname.indexOf('/download') === 0) {
+    if (pathname.indexOf('/app-icon') === 0) {
+      return handleAppIconRequest(req, res)
+    } else if (pathname.indexOf('/download') === 0) {
       return handleDownloadRequest(req, res)
     }
 

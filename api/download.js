@@ -10,7 +10,6 @@ class MemoryCache {
   }
 
   set(key, value, ttl, cb) {
-    // ignore ttl
     this.store[key] = value
     cb()
   }

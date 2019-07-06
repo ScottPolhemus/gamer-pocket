@@ -8,6 +8,8 @@ import {
   screenVertical3x,
 } from '../../../css/mq'
 
+const lcdColor = 'rgba(0,0,0,0.1125)'
+
 export const ScreenContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -92,7 +94,7 @@ export const ScreenOverlay = styled.span`
   ${(props) => props.filter === 'lcd' && css`
     background-position: 1px 1px;
     background-size: 2px 2px;
-    background-image: linear-gradient(rgba(0,0,0,0.125), rgba(0,0,0,0.125) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.125) 75%, rgba(0,0,0,0.125)), linear-gradient(90deg, rgba(0,0,0,0.125), rgba(0,0,0,0.125) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.125) 75%, rgba(0,0,0,0.125));
+    background-image: linear-gradient(${lcdColor}, ${lcdColor} 25%, transparent 25%, transparent 75%, ${lcdColor} 75%, ${lcdColor}), linear-gradient(90deg, ${lcdColor}, ${lcdColor} 25%, transparent 25%, transparent 75%, ${lcdColor} 75%, ${lcdColor});
 
     @media ${screen3x}, ${screenVertical3x} {
       background-size: 3px 3px;

@@ -3,7 +3,6 @@ import App, { Container } from 'next/app'
 import nextCookies from 'next-cookies'
 import { CookiesProvider, Cookies } from 'react-cookie'
 
-import getMuiContext from '../lib/mui'
 import { SettingsProvider } from '../lib/settings'
 import Player from '../components/Player'
 
@@ -22,14 +21,8 @@ export default class extends App {
     }
   }
 
-  constructor() {
-    super()
-
-    this.muiContext = getMuiContext()
-  }
-
   componentDidMount() {
-    const serverJSS = document.querySelector('#server-jss');
+    const serverJSS = document.querySelector('#jss-server-side');
 
     if (serverJSS && serverJSS.parentNode) {
       serverJSS.parentNode.removeChild(serverJSS);
@@ -47,8 +40,8 @@ export default class extends App {
       <Container>
         <CookiesProvider cookies={new Cookies(cookies)}>
           <SettingsProvider>
-            <Player muiContext={this.muiContext}>
-              <Component muiContext={this.muiContext} {...pageProps} />
+            <Player>
+              <Component {...pageProps} />
             </Player>
           </SettingsProvider>
         </CookiesProvider>
