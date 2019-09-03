@@ -1,6 +1,7 @@
 /* App server */
 
 const { createServer } = require('http')
+const { join } = require('path')
 const { parse } = require('url')
 const next = require('next')
 
@@ -18,7 +19,11 @@ app.prepare().then(() => {
     const parsedUrl = parse(req.url, true)
     const { pathname, query } = parsedUrl
 
-    if (pathname.indexOf('/app-icon') === 0) {
+    if (pathname === '/service-worker.js') {
+      const filePath = join(__dirname, '.next', pathname)
+      
+      return app.serveStatic(req, res, filePath)
+    } else if (pathname.indexOf('/app-icon') === 0) {
       return handleAppIconRequest(req, res)
     } else if (pathname.indexOf('/download') === 0) {
       return handleDownloadRequest(req, res)

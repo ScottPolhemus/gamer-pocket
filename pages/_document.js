@@ -34,7 +34,6 @@ export default class extends Document {
           <meta name="viewport" content="width=device-width, viewport-fit=cover" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-          <link rel="apple-touch-icon" href="/app-icon.svg" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
         </Head>
         <body>

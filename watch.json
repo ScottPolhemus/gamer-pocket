@@ -7,9 +7,9 @@
   "restart": {
     "include": [
       ".env",
-      ".babelrc",
-      "server.js",
-      "api/app-icon.js"
+      "babel.config.js",
+      "next.config.js",
+      "server.js"
     ]
   },
   "throttle": 250

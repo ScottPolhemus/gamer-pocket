@@ -20,7 +20,7 @@ const ExportSaveButton = () => {
 
     body.append('data', data)
 
-    const response = await fetch('/download', {
+    const response = await fetch('/api/download', {
       method: 'POST',
       body
     })
@@ -47,7 +47,7 @@ const ExportSaveButton = () => {
       {fileHash && (
         <a
           onClick={(event) => event.stopPropagation()}
-          href={`/download?name=${currentGame}.sav&hash=${fileHash}`}
+          href={`/api/download?name=${currentGame}.sav&hash=${fileHash}`}
           ref={anchorRef}
           style={{display: 'none'}}
         >Download</a>

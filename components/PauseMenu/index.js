@@ -11,10 +11,11 @@ const PauseMenu = () => {
   return (
     <>
       <PageTitle>Paused - Tap screen to resume</PageTitle>
-      <Grid container spacing={16}>
+      <Grid container spacing={2}>
         <Grid item xs={6}>
           <Button
             variant="contained"
+            color="error"
             fullWidth
             onClick={(event) => {
               event.stopPropagation();
