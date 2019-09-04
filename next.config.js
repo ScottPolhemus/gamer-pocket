@@ -1,6 +1,7 @@
 const withOffline = require('next-offline')
 
 module.exports = withOffline({
+  registerSwPrefix: 'api',
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.resolve.alias['svgtoimg'] = 'svg2img'

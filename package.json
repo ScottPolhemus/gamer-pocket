@@ -2,7 +2,8 @@
   "name": "gamer-pocket",
   "version": "0.0.1",
   "scripts": {
-    "start": "node ./server"
+    "start": "if [[ $NEXT_ENV == 'production2' ]]; then next build && npm run server; else npm run server; fi",
+    "server": "node ./server"
   },
   "dependencies": {
     "gameboy": "https://github.com/ScottPolhemus/gameboy.git#devel",

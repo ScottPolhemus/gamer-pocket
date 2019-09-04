@@ -5,9 +5,6 @@ const { join } = require('path')
 const { parse } = require('url')
 const next = require('next')
 
-const handleAppIconRequest = require('./api/app-icon')
-const handleDownloadRequest = require('./api/download')
-
 const app = next({
   dev: process.env.NEXT_ENV !== 'production'
 })
@@ -23,10 +20,6 @@ app.prepare().then(() => {
       const filePath = join(__dirname, '.next', pathname)
       
       return app.serveStatic(req, res, filePath)
-    } else if (pathname.indexOf('/app-icon') === 0) {
-      return handleAppIconRequest(req, res)
-    } else if (pathname.indexOf('/download') === 0) {
-      return handleDownloadRequest(req, res)
     }
 
     return handleAppRequest(req, res, parsedUrl)
