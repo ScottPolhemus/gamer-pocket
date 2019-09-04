@@ -1,37 +1,29 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+import { ServerStyleSheet as StyledSheet } from 'styled-components'
+import { ServerStyleSheets as MuiSheet } from '@material-ui/styles'
 
 export default class extends Document {
   static async getInitialProps (ctx) {
-    const sheet = new ServerStyleSheet()
-    let muiContext
+    const styledSheet = new StyledSheet()
+    const muiSheet = new MuiSheet()
+    
+    const originalRenderPage = ctx.renderPage
+    
+    ctx.renderPage = () => originalRenderPage({
+      enhanceApp: App => props => muiSheet.collect(styledSheet.collectStyles(<App {...props} />)),
+    })
+    
+    const initialProps = await Document.getInitialProps(ctx)
 
-    try {
-      const initialProps = ctx.renderPage(
-        Component => props => {
-          muiContext = props.muiContext
-          return sheet.collectStyles(<Component {...props} />)
-        }
+    return {
+      ...initialProps,
+      styles: (
+        <>
+          {initialProps.styles}
+          {muiSheet.getStyleElement()}
+          {styledSheet.getStyleElement()}
+        </>
       )
-      const serverJss = muiContext ? muiContext.sheetsRegistry.toString() : ''
-
-      return {
-        ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            <style
-              dangerouslySetInnerHTML={{ __html: serverJss }}
-              id="server-jss"
-              key="server-jss"
-            />
-            <noscript id="client-jss" key="client-jss"></noscript>
-            {sheet.getStyleElement()}
-          </>
-        )
-      }
-    } finally {
-      sheet.seal()
     }
   }
 

@@ -73,7 +73,7 @@ const SelectGame = () => {
             {availableGames.map((game) => (
               <MenuItem key={`game-${game}`} value={game}>{game}</MenuItem>
             ))}
-            <MenuItem key={`game-add`} value="add">Add ROM</MenuItem>
+            <MenuItem key={`game-add`} value="add">Add ROM File</MenuItem>
           </GameField>
           <input
             type="file"

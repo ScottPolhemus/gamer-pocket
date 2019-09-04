@@ -1,5 +1,12 @@
 import styled, { css } from 'styled-components'
 
+import {
+  screenHorizontal,
+  screen3x,
+  screen4x,
+  screenVertical3x,
+} from '../../../css/mq'
+
 export const ControlsContainer = styled.div`
   position: relative;
   display: flex;
@@ -8,10 +15,18 @@ export const ControlsContainer = styled.div`
 
   ${(props) => props.position === 'left' && css`
     order: 1;
+
+    @media ${screenVertical3x} {
+      margin-left: 48px;
+    }
   `}
 
   ${(props) => props.position === 'right' && css`
     order: 2;
+
+    @media ${screenVertical3x} {
+      margin-right: 48px;
+    }
   `}
 
   ${(props) => props.position === 'bottom' && css`
@@ -47,6 +62,7 @@ export const ControlOutline = styled.span`
   display: block;
   z-index: -1;
   background: black;
+  transition: 150ms;
 
   ${(props) => props.type === 'circle' && css`
     top: ${100 * ((props.pos.y - props.pos.r) / props.size.height)}%;
@@ -66,5 +82,65 @@ export const ControlOutline = styled.span`
 
   ${(props) => props.pressed && css`
     background: white;
+    transition: none;
+  `}
+`
+
+const angle = (direction) => {
+  switch (direction) {
+    case 'up':
+      return 0;
+    case 'up-right':
+      return 45;
+    case 'right':
+      return 90;
+    case 'down-right':
+      return 135;
+    case 'down':
+      return 180;
+    case 'down-left':
+      return 225
+    case 'left':
+      return 270
+    case 'up-left':
+      return 315
+  }
+}
+
+export const Direction = styled.span`
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 16px;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+  border-top: 0px solid transparent;
+  border-bottom: 8px solid black;
+  transform-origin: 8px 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms;
+
+  ${(props) => props.rotating && css`
+    transition: 150ms;
+  `}
+
+  &::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 8px;
+    height: 6px;
+    background: black;
+    top: 8px;
+    left: -4px;
+    right: 0;
+  }
+
+  ${(props) => props.direction && css`
+    transform: rotate(${angle(props.direction)}deg);
+  `}
+
+  ${(props) => props.visible && css`
+    /*opacity: 1;*/
   `}
 `

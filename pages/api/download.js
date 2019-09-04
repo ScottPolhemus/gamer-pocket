@@ -1,7 +1,10 @@
-const url = require('url')
-const dataURIToBuffer = require('data-uri-to-buffer')
-const formidable = require('formidable')
-const stringHash = require('string-hash')
+// TODO: Polyfill behavior with service worker for non-Safari browsers
+// (Safari doesn't allow service workers to respond to file download requests or something)
+
+import url  from 'url'
+import dataURIToBuffer  from 'data-uri-to-buffer'
+import formidable  from 'formidable'
+import stringHash  from 'string-hash'
 
 // TODO: Replace with external memcached for serverless environment
 class MemoryCache {
@@ -21,7 +24,7 @@ class MemoryCache {
 
 const cache = new MemoryCache()
 
-module.exports = (req, res) => {
+export default (req, res) => {
   if (req.method === 'POST') {
     // On POST request, parse form data then store file data-uri in cache, responding with string hash key
     return new formidable.IncomingForm().parse(req, (err, {data}) => {
