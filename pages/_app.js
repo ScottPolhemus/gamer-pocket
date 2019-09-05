@@ -16,12 +16,9 @@ export default class extends App {
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
-    
-    // const icon = await generateIconImage(cookies.color)
 
     return {
       cookies,
-      // icon,
       pageProps
     }
   }
@@ -41,27 +38,18 @@ export default class extends App {
       serverJSS.parentNode.removeChild(serverJSS);
     }
     
-    generateIconImage(this.props.cookies.color)
-      .then((icon) => {
-        console.log({icon})
-        this.setState({
-          icon
-        })
-      })
+    this.generateIcon()
   }
   
   componentDidUpdate(prevProps) {
-    console.log(this.props.cookies.color)
     if (prevProps.cookies.color !== this.props.cookies.color) {
-      console.log('changed')
-      generateIconImage(this.props.cookies.color)
-        .then((icon) => {
-          console.log({icon})
-          this.setState({
-            icon
-          })
-        })
+      this.generateIcon()
     }
+  }
+  
+  generateIcon() {
+    generateIconImage(this.props.cookies.color)
+      .then((icon) => this.setState({ icon }))
   }
 
   render() {
