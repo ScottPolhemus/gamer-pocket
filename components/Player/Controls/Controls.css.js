@@ -62,7 +62,17 @@ export const ControlOutline = styled.span`
   display: block;
   z-index: -1;
   background: black;
-  transition: 150ms;
+  overflow: hidden;
+  border: 1px solid hsla(0,0%,10%,1);
+  /*box-shadow: -5px -5px 5px white, 5px 5px 5px black;*/
+  
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(45deg, black, hsla(0,0%,25%,1));
+  }
 
   ${(props) => props.type === 'circle' && css`
     top: ${100 * ((props.pos.y - props.pos.r) / props.size.height)}%;
@@ -82,7 +92,7 @@ export const ControlOutline = styled.span`
 
   ${(props) => props.pressed && css`
     background: white;
-    transition: none;
+    /*transition: none;*/
   `}
 `
 
@@ -118,10 +128,10 @@ export const Direction = styled.span`
   transform-origin: 8px 8px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 150ms;
+  /*transition: opacity 150ms;*/
 
   ${(props) => props.rotating && css`
-    transition: 150ms;
+    /*transition: 150ms;*/
   `}
 
   &::before {

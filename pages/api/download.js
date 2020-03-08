@@ -25,9 +25,12 @@ export default (req, res) => {
   if (req.method === 'POST') {
     // On POST request, parse form data then store file data-uri in cache, responding with string hash key
     try {
+      // Find data URI in parsed body from request object
       const data = req.body.split('\n').find((str) => str.indexOf('data:application/octet-binary;base64') === 0)
+      // Create hash id from data URI
       const hash = stringHash(data)
     
+      // Store data URI in cache and respond with hash
       return cache.set(hash, data, 86400, (err) => {
         if (err) {
           // Internal server error

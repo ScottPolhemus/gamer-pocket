@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 
 import { usePlayer } from '../lib/player'
 import LoadingGate from '../components/LoadingGate'
@@ -13,14 +14,19 @@ const IndexPage = () => {
   const { initialized, loadedGame, currentGame, playing, paused } = usePlayer()
 
   return (
-    <LoadingGate>
-      {paused ? <PauseMenu /> : <SelectGame />}
-      <FooterActions>
-        {initialized && <SettingsButton />}
-        {initialized && (loadedGame || currentGame) && <SaveButton />}
-        {playing && <MuteButton />}
-      </FooterActions>
-    </LoadingGate>
+    <>
+      <Head>
+        <title>Gamer Pocket</title>
+      </Head>
+      <LoadingGate>
+        {paused ? <PauseMenu /> : <SelectGame />}
+        <FooterActions>
+          {initialized && <SettingsButton />}
+          {initialized && (loadedGame || currentGame) && <SaveButton />}
+          {playing && <MuteButton />}
+        </FooterActions>
+      </LoadingGate>
+    </>
   )
 }
 

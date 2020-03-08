@@ -24,7 +24,7 @@ const Player = ({
           <ControlsProvider>
             <CssBaseline />
             <BaseStyle color={color} />
-            <PlayerContainer>
+            <PlayerContainer color={color}>
               <Screen>{children}</Screen>
               {controlsConfig.map((config) => (
                 <Controls key={`controls-${config.group}`} {...config} />)
