@@ -95,7 +95,6 @@ export const ScreenOverlay = styled.span`
     background-position: 1px 1px;
     background-size: 2px 2px;
     background-image: linear-gradient(${lcdColor}, ${lcdColor} 25%, transparent 25%, transparent 75%, ${lcdColor} 75%, ${lcdColor}), linear-gradient(90deg, ${lcdColor}, ${lcdColor} 25%, transparent 25%, transparent 75%, ${lcdColor} 75%, ${lcdColor});
-    box-shadow: inset 0 0 4px 4px hsla(0,0%,0%,0.5);
 
     @media ${screen3x}, ${screenVertical3x} {
       background-size: 3px 3px;
