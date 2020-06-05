@@ -9,7 +9,7 @@
       ".env",
       "babel.config.js",
       "next.config.js",
-      "server.js"
+      "server/**"
     ]
   },
   "throttle": 250

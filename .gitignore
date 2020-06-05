@@ -1,7 +1,3 @@
-.next
-.config
-.data
+.vscode
 node_modules
 dist
-shrinkwrap.yaml
-package-lock.json

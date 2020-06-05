@@ -1,0 +1,89 @@
+// TODO: Polyfill behavior with service worker for non-Safari browsers
+// (Safari doesn't allow service workers to respond to file download requests or something, but chrome does)
+const dataURIToBuffer = require('data-uri-to-buffer')
+const stringHash = require('string-hash')
+
+// TODO: Replace with external memcached for serverless environment
+class MemoryCache {
+  constructor() {
+    this.store = {}
+  }
+
+  set(key, value, ttl, cb) {
+    this.store[key] = value
+    cb()
+  }
+
+  get(key, cb) {
+    cb(null, this.store[key])
+  }
+}
+
+const cache = new MemoryCache()
+
+const handleSaveRequest = (req, res) => {
+  if (req.method === 'POST') {
+    // On POST request, parse form data then store file data-uri in cache, responding with string hash key
+    try {
+      // Find data URI in parsed body from request object
+      const data = req.body.data
+        .split('\n')
+        .find(
+          (str) => str.indexOf('data:application/octet-binary;base64') === 0
+        )
+      // Create hash id from data URI
+      const hash = stringHash(data)
+
+      // Store data URI in cache and respond with hash
+      return cache.set(hash, data, 86400, (err) => {
+        if (err) {
+          // Internal server error
+          res.writeHead(500)
+          return res.end()
+        }
+
+        // Success
+        res.writeHead(200)
+        res.end(`${hash}`)
+      })
+    } catch (e) {
+      // Bad request
+      res.writeHead(400)
+      return res.end()
+    }
+  } else if (req.method === 'GET') {
+    // On GET request, retrieve data URI from cache and respond with decoded file buffer with given filename
+    const { name, hash } = req.query
+
+    if (!name || !hash) {
+      // Bad request
+      res.writeHead(400)
+      return res.end()
+    }
+
+    return cache.get(hash, (err, data) => {
+      if (!data) {
+        // Not found
+        res.writeHead(404)
+        return res.end()
+      } else if (err) {
+        // Internal server error
+        res.writeHead(500)
+        return res.end()
+      }
+
+      // Success
+      res.writeHead(200, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${name}"`,
+      })
+      return res.end(dataURIToBuffer(data))
+    })
+  }
+
+  // Method not allowed
+  res.writeHead(405)
+  res.end()
+}
+
+module.exports = handleSaveRequest
