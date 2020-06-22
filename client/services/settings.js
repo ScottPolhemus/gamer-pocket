@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
-import { useCookies } from 'react-cookie'
+import useLocalStorageState from 'use-local-storage-state'
 
 export const SettingsContext = createContext()
 
@@ -20,13 +20,10 @@ const colorOptions = [
 const settingsOptions = []
 
 export const SettingsProvider = ({ children }) => {
-  const [
-    { color = 'rebeccapurple', screenFilter = 'lcd' } = {},
-    setCookie,
-  ] = useCookies()
   const [menu, setMenu] = useState(``)
-  const setColor = (val) => setCookie('color', val)
-  const setScreenFilter = (val) => setCookie('screenFilter', val)
+  
+  const [color, setColor] = useLocalStorageState('color', 'rebeccapurple')
+  const [screenFilter, setScreenFilter] = useLocalStorageState('screenFilter', 'lcd')
 
   return (
     <SettingsContext.Provider

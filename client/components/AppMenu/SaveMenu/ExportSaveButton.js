@@ -21,7 +21,7 @@ const ExportSaveButton = () => {
 
     const response = await fetch('/save', {
       method: 'POST',
-      body,
+      body
     })
     const responseText = await response.text()
 

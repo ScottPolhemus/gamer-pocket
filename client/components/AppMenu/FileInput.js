@@ -3,10 +3,10 @@ import React, { useRef } from 'react'
 import { MenuButton, HiddenInput } from './AppMenu.css'
 import { readFileInput } from '../../utils/file'
 
-const FileInput = ({ onChange, label, accept }) => {
+const FileInput = ({ onChange, label, accept, ref }) => {
   const hiddenInputRef = useRef()
   const onClick = (e) => {
-    hiddenInputRef.current.click()
+    ref ? ref.current.click() : hiddenInputRef.current.click()
   }
   const onChangeFile = (event) => readFileInput(event.target).then(onChange)
 
@@ -18,7 +18,7 @@ const FileInput = ({ onChange, label, accept }) => {
       <HiddenInput
         type="file"
         accept={accept}
-        ref={hiddenInputRef}
+        ref={ref || hiddenInputRef}
         onChange={onChangeFile}
       />
     </div>

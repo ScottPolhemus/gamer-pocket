@@ -46,11 +46,11 @@ const MenuInput = styled.input`
 `
 
 export const MenuButton = styled(MenuInput).attrs({
-  as: 'button',
+  as: 'button'
 })``
 
 export const MenuSelect = styled(MenuInput).attrs({
-  as: `select`,
+  as: `select`
 })``
 
 export const HiddenInput = styled.input`
@@ -103,7 +103,7 @@ export const ToggleInput = styled.input`
 `
 
 export const ToggleOutline = styled(MenuButton).attrs({
-  as: 'span',
+  as: 'span'
 })`
   display: inline-block;
   width: auto;

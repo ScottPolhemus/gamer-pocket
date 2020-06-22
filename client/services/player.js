@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { useCookies } from 'react-cookie'
+import useLocalStorageState from 'use-local-storage-state'
 import GameBoyPlayer from 'gameboy'
 
 import { useSettings } from './settings'
@@ -19,8 +19,8 @@ export const PlayerProvider = ({ children }) => {
   const playerRef = useRef()
   const screenCanvasRef = useRef()
   const [loadedGame, setLoadedGame] = useState('')
-  const [{ currentGame = '', muted = '' }, setCookie] = useCookies()
-  const setCurrentGame = useCallback((val) => setCookie('currentGame', val), [])
+  const [currentGame, setCurrentGame] = useLocalStorageState('currentGame', '')
+  const [muted, setMuted] = useLocalStorageState('muted', false)
   const [freeze, setFreeze] = useState(null)
   const [freezeScreen, setFreezeScreen] = useState(null)
   const [initialized, setInitialized] = useState(false)
@@ -28,14 +28,6 @@ export const PlayerProvider = ({ children }) => {
   const [paused, setPaused] = useState(false)
   const [pageHidden, setPageHidden] = useState(false)
   const [pageFocused, setPageFocused] = useState(true)
-
-  const setMuted = (val) => {
-    if (val) {
-      setCookie('muted', 'true')
-    } else {
-      setCookie('muted', '')
-    }
-  }
 
   // Initialize GameBoyPlayer on mount
   useEffect(() => {

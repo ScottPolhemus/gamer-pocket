@@ -9,6 +9,7 @@ const GameSelect = ({ onChange }) => {
   const { initialized, playerRef, loadedGame, openROM } = usePlayer()
   const [ready, setReady] = useState(false)
   const [availableGames, setAvailableGames] = useState([])
+  const [selectedGame, setSelectedGame] = useState('');
   const hiddenInputRef = useRef()
 
   const updateAvailableGames = () => {
@@ -25,48 +26,44 @@ const GameSelect = ({ onChange }) => {
 
   useEffect(updateAvailableGames, [initialized])
 
+  useEffect(() => {
+    if (selectedGame) {
+      if (selectedGame === 'add') {
+        hiddenInputRef.current.click()
+      } else {
+        playerRef.current.loadROM(selectedGame).then(openROM)
+      }
+    }
+  }, [selectedGame])
+
   if (!ready) {
     return null
   }
 
-  if (!availableGames.length) {
-    return (
+  return (
+    <>
       <FileInput
+        ref={hiddenInputRef}
         accept=".gb,.gbc"
         label="Add ROM File"
         onChange={(file) => openROM(file).then(updateAvailableGames)}
       />
-    )
-  }
-
-  return (
-    <>
-      <MenuSelect
-        value={loadedGame}
-        onChange={(event) => {
-          if (event.target.value === `add`) {
-            hiddenInputRef.current.click()
-          } else if (event.target.value) {
-            playerRef.current.loadROM(event.target.value).then(openROM)
-          }
-        }}
-      >
-        <option key="game-select">Select game</option>
-        {availableGames.map((game) => (
-          <option key={`game-${game}`} value={game}>
-            {game}
-          </option>
-        ))}
-        <option key="game-add" value="add">
-          Add ROM
-        </option>
-      </MenuSelect>
-      <HiddenInput
-        type="file"
-        accept=".gb,.gbc"
-        onChange={(event) => readFileInput(event.target).then(onChange)}
-        ref={hiddenInputRef}
-      />
+      {!!availableGames.length && (
+        <MenuSelect
+          value={loadedGame}
+          onChange={(event) => {
+            setSelectedGame(event.target.value || ``)
+          }}
+        >
+          <option key="game-select">Select game</option>
+          {availableGames.map((game) => (
+            <option key={`game-${game}`} value={game}>
+              {game}
+            </option>
+          ))}
+          <option value="add">Add</option>
+        </MenuSelect>
+      )}
     </>
   )
 }

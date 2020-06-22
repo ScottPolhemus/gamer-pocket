@@ -14,6 +14,9 @@ export const PlayerContainer = styled.div`
   right: 0;
   bottom: 0;
 
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-left);
+
   @media ${screenVertical3x} {
     justify-content: space-between;
   }
