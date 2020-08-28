@@ -26,8 +26,9 @@ module.exports = {
     }),
   ],
   devServer: {
-    disableHostCheck: true,
     contentBase: path.join(__dirname, 'public'),
+    disableHostCheck: true,
+    host: '0.0.0.0',
     hot: true,
     proxy: {
       '/save': 'http://localhost:9001',
