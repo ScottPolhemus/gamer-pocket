@@ -26,12 +26,9 @@ module.exports = {
     }),
   ],
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
-    disableHostCheck: true,
+    static: path.join(__dirname, 'public'),
+    firewall: false,
     host: '0.0.0.0',
-    hot: true,
-    proxy: {
-      '/save': 'http://localhost:9001',
-    },
+    hot: true
   },
 }
