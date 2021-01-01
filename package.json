@@ -2,22 +2,19 @@
   "name": "gamer-pocket",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development --port 3000"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
-    "body-parser": "^1.19.0",
     "color": "^3.1.3",
     "color-name": "^1.1.4",
-    "data-uri-to-buffer": "^3.0.1",
-    "express": "^4.17.1",
     "gameboy": "https://github.com/ScottPolhemus/gameboy.git#devel",
     "lodash": "^4.17.20",
-    "multer": "^1.4.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "sat": "^0.8.0",
-    "string-hash": "^1.1.3",
     "styled-components": "^5.2.1",
     "svg-to-image": "^1.1.3",
     "use-local-storage-state": "^6.0.2"
@@ -30,12 +27,12 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
+    "copy-webpack-plugin": "^7.0.0",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "html-loader": "^1.3.2",
     "html-webpack-plugin": "^4.5.0",
     "react-hot-loader": "^4.13.0",
     "stylelint": "^13.8.0",

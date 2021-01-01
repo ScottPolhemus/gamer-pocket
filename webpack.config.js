@@ -1,5 +1,6 @@
 const path = require(`path`)
 const HTMLWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: ['react-hot-loader/patch', './client/index.js'],
@@ -24,9 +25,13 @@ module.exports = {
       template: path.join(__dirname, 'client/index.html'),
       filename: 'index.html',
     }),
+    new CopyPlugin({
+      patterns: [
+        { from: 'public', to: '' },
+      ],
+    })
   ],
   devServer: {
-    static: path.join(__dirname, 'public'),
     firewall: false,
     host: '0.0.0.0',
     hot: true
