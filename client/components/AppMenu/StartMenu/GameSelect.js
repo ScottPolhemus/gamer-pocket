@@ -43,7 +43,7 @@ const GameSelect = ({ onChange }) => {
   return (
     <>
       <FileInput
-        ref={hiddenInputRef}
+        inputRef={hiddenInputRef}
         accept=".gb,.gbc"
         label="Add ROM File"
         onChange={(file) => openROM(file).then(updateAvailableGames)}
