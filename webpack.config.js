@@ -32,6 +32,7 @@ module.exports = {
     })
   ],
   devServer: {
+    static: false,
     firewall: false,
     host: '0.0.0.0',
     hot: true
