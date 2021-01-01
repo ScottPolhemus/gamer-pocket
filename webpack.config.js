@@ -1,6 +1,7 @@
 const path = require(`path`)
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: ['react-hot-loader/patch', './client/index.js'],
@@ -29,7 +30,11 @@ module.exports = {
       patterns: [
         { from: 'public', to: '' },
       ],
-    })
+    }),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
   ],
   devServer: {
     static: false,
