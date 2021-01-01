@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { usePlayer } from '../../../services/player'
 import { createDataUrl } from '../../../utils/file'
@@ -6,51 +6,44 @@ import { MenuButton } from '../AppMenu.css'
 
 const ExportSaveButton = () => {
   const anchorRef = useRef()
-  const [fileHash, setFileHash] = useState('')
+  const [fileURL, setFileURL] = useState('')
   const { currentGame, loadedGame, getSRAM } = usePlayer()
 
-  // On click export, perform POST request to upload save and store hash
-  const onClickExport = async (e) => {
-    e.stopPropagation()
-
-    const sram = await getSRAM()
-    const data = await createDataUrl(sram)
-    const body = new FormData()
-
-    body.append('data', data)
-
-    const response = await fetch('/save', {
-      method: 'POST',
-      body
-    })
-    const responseText = await response.text()
-
-    setFileHash(responseText)
-  }
-
-  // After receiving hash, trigger click on download link to save file
   useEffect(() => {
-    if (fileHash) {
-      anchorRef.current.click()
-      setFileHash('')
-    }
-  }, [fileHash])
+    getSRAM()
+      .then(createDataUrl)
+      .then((dataURL) => {
+        setFileURL(dataURL)
+      })
+  }, [])
+
+  const onClickExport = useCallback((event) => {
+    event.stopPropagation()
+    event.preventDefault()
+    anchorRef.current.click()
+  }, [])
+
+  const onClickDownload = useCallback((event) => {
+    event.stopPropagation()
+  }, []);
 
   return (
     <>
-      <MenuButton fullWidth variant="contained" onClick={onClickExport}>
+      <MenuButton
+        fullWidth
+        variant="contained"
+        onClick={onClickExport}
+        disabled={!fileURL}
+      >
         Export Save File
       </MenuButton>
-      {fileHash && (
-        <a
-          onClick={(e) => e.stopPropagation()}
-          href={`/save?name=${loadedGame || currentGame}.sav&hash=${fileHash}`}
-          ref={anchorRef}
-          style={{ display: 'none' }}
-        >
-          Download
-        </a>
-      )}
+      <a
+        download={`${loadedGame || currentGame}.sav`}
+        href={fileURL}
+        onClick={onClickDownload}
+        ref={anchorRef}
+        style={{ display: 'none' }}
+      >Download</a>
     </>
   )
 }
