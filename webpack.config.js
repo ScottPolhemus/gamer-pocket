@@ -2,9 +2,13 @@ const path = require(`path`)
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const EnvironmentPlugin = require('webpack').EnvironmentPlugin;
 
 module.exports = {
   entry: ['react-hot-loader/patch', './client/index.js'],
+  output: {
+    publicPath: process.env.ASSET_PATH || '',
+  },
   module: {
     rules: [
       {
@@ -22,6 +26,9 @@ module.exports = {
     },
   },
   plugins: [
+    new EnvironmentPlugin({
+      ASSET_PATH: ''
+    }),
     new HTMLWebpackPlugin({
       template: path.join(__dirname, 'client/index.html'),
       filename: 'index.html',
