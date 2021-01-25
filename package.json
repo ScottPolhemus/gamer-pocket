@@ -4,7 +4,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "serve": "cd dist && serve -p 3000",
-    "deploy": "ASSET_PATH=http://polhem.us/gamer-pocket/ npm run build && gh-pages -d dist",
+    "deploy": "ASSET_PATH=https://polhem.us/gamer-pocket/ npm run build && gh-pages -d dist",
     "start": "webpack-dev-server --mode development --port 3000"
   },
   "engines": {
