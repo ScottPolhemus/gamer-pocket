@@ -1,1 +1,93 @@
-let XAudioJSResampledBuffer=[],XAudioJSOutputBuffer=[],XAudioJSResampleBufferStart=0,XAudioJSResampleBufferEnd=0,XAudioJSResampleBufferSize=0,XAudioJSChannelsAllocated=1;self.onmessage=e=>{const u=e.data;switch(u[0]){case 0:const e=u[1],f=e.length;for(let u=0;u<f;u++)XAudioJSResampledBuffer[XAudioJSResampleBufferEnd++]=e[u],XAudioJSResampleBufferEnd==XAudioJSResampleBufferSize&&(XAudioJSResampleBufferEnd=0),XAudioJSResampleBufferStart==XAudioJSResampleBufferEnd&&(XAudioJSResampleBufferStart+=XAudioJSChannelsAllocated,XAudioJSResampleBufferStart==XAudioJSResampleBufferSize&&(XAudioJSResampleBufferStart=0));break;case 1:XAudioJSResampleBufferSize=u[1],XAudioJSChannelsAllocated=u[2],XAudioJSResampledBuffer=new Float32Array(XAudioJSResampleBufferSize)}};const XAudioJSResampledSamplesLeft=()=>(XAudioJSResampleBufferStart<=XAudioJSResampleBufferEnd?0:XAudioJSResampleBufferSize)+XAudioJSResampleBufferEnd-XAudioJSResampleBufferStart;self.onprocessmedia=e=>{var u=e.audioLength,f=u*e.audioChannels;f>XAudioJSOutputBuffer.length&&(XAudioJSOutputBuffer=new Float32Array(f));for(var a=Math.min(u,((XAudioJSResampleBufferStart<=XAudioJSResampleBufferEnd?0:XAudioJSResampleBufferSize)+XAudioJSResampleBufferEnd-XAudioJSResampleBufferStart)/XAudioJSChannelsAllocated),d=0,r=0;d<a;++d)for(r=d;r<f;r+=u)XAudioJSOutputBuffer[r]=XAudioJSResampledBuffer[XAudioJSResampleBufferStart++],XAudioJSResampleBufferStart==XAudioJSResampleBufferSize&&(XAudioJSResampleBufferStart=0);for(;d<u;)for(r=d++;r<f;r+=u)XAudioJSOutputBuffer[r]=0;e.writeAudio(XAudioJSOutputBuffer.subarray(0,f)),self.postMessage(e.audioLength)};
+let XAudioJSResampledBuffer = []
+let XAudioJSOutputBuffer = []
+let XAudioJSResampleBufferStart = 0
+let XAudioJSResampleBufferEnd = 0
+let XAudioJSResampleBufferSize = 0
+let XAudioJSChannelsAllocated = 1
+
+// Handle message event
+self.onmessage = (event) => {
+  const data = event.data
+  switch (data[0]) {
+    case 0:
+      // Add new audio samples to our ring buffer:
+      const resampledResult = data[1]
+      const length = resampledResult.length
+      for (let i = 0; i < length; i++) {
+        XAudioJSResampledBuffer[XAudioJSResampleBufferEnd++] =
+          resampledResult[i]
+        if (XAudioJSResampleBufferEnd == XAudioJSResampleBufferSize) {
+          XAudioJSResampleBufferEnd = 0
+        }
+        if (XAudioJSResampleBufferStart == XAudioJSResampleBufferEnd) {
+          XAudioJSResampleBufferStart += XAudioJSChannelsAllocated
+          if (XAudioJSResampleBufferStart == XAudioJSResampleBufferSize) {
+            XAudioJSResampleBufferStart = 0
+          }
+        }
+      }
+      break
+    case 1:
+      // Initialize:
+      XAudioJSResampleBufferSize = data[1]
+      XAudioJSChannelsAllocated = data[2]
+      XAudioJSResampledBuffer = new Float32Array(XAudioJSResampleBufferSize)
+  }
+}
+
+// Accessory function used to determine remaining samples in the ring buffer:
+const XAudioJSResampledSamplesLeft = () => {
+  return (
+    (XAudioJSResampleBufferStart <= XAudioJSResampleBufferEnd
+      ? 0
+      : XAudioJSResampleBufferSize) +
+    XAudioJSResampleBufferEnd -
+    XAudioJSResampleBufferStart
+  )
+}
+
+// Handle MediaStream event
+self.onprocessmedia = (event) => {
+  // Get some buffer length computations:
+  var apiBufferLength = event.audioLength
+  var apiBufferLengthAll = apiBufferLength * event.audioChannels
+  if (apiBufferLengthAll > XAudioJSOutputBuffer.length) {
+    XAudioJSOutputBuffer = new Float32Array(apiBufferLengthAll)
+  }
+  // De-interleave the buffered audio while looping through our ring buffer:
+  var sampleFramesCount = Math.min(
+    apiBufferLength,
+    XAudioJSResampledSamplesLeft() / XAudioJSChannelsAllocated
+  )
+  for (
+    var sampleFramePosition = 0, channelOffset = 0;
+    sampleFramePosition < sampleFramesCount;
+    ++sampleFramePosition
+  ) {
+    for (
+      channelOffset = sampleFramePosition;
+      channelOffset < apiBufferLengthAll;
+      channelOffset += apiBufferLength
+    ) {
+      XAudioJSOutputBuffer[channelOffset] =
+        XAudioJSResampledBuffer[XAudioJSResampleBufferStart++]
+      if (XAudioJSResampleBufferStart == XAudioJSResampleBufferSize) {
+        XAudioJSResampleBufferStart = 0
+      }
+    }
+  }
+  // Add some zero fill if we underran the required buffer fill amount:
+  while (sampleFramePosition < apiBufferLength) {
+    for (
+      channelOffset = sampleFramePosition++;
+      channelOffset < apiBufferLengthAll;
+      channelOffset += apiBufferLength
+    ) {
+      XAudioJSOutputBuffer[channelOffset] = 0
+    }
+  }
+  // Write some buffered audio:
+  event.writeAudio(XAudioJSOutputBuffer.subarray(0, apiBufferLengthAll))
+  // Request a buffer from the main thread:
+  self.postMessage(event.audioLength)
+}
