@@ -33,7 +33,7 @@ export const PlayerProvider = ({ children }) => {
   useEffect(() => {
     if (!initialized) {
       playerRef.current = new GameBoyPlayer(screenCanvasRef.current, {
-        mediaStreamWorkerSrc: `/media-stream-worker.js`,
+        mediaStreamWorkerSrc: `${import.meta.env.BASE_URL}media-stream-worker.js`,
         soundVolume: muted ? 0 : 0.5,
       })
       setInitialized(true)
