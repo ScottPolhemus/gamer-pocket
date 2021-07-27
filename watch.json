@@ -1,16 +1,19 @@
 {
   "install": {
     "include": [
-      "package.json"
-    ]
+      "^package\\.json$"
+    ],
+    "exclude": []
   },
   "restart": {
     "include": [
-      ".env",
-      "babel.config.js",
-      "next.config.js",
-      "server/**"
+      "^\\.env$",
+      "^backend/"
+    ],
+    "exclude": [
+      "src/" 
     ]
   },
-  "throttle": 250
+  "throttle": 250,
+  "noSavedEvents": true
 }
