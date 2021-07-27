@@ -1,5 +1,4 @@
 import React from 'react'
-import { hot } from 'react-hot-loader/root'
 
 import { ControlsProvider } from '../services/controls'
 import { PlayerProvider } from '../services/player'
@@ -19,4 +18,4 @@ const App = () => (
   </SettingsProvider>
 )
 
-export default hot(App)
+export default App
