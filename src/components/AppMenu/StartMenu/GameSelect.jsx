@@ -1,9 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 
 import { usePlayer } from '../../../services/player'
 import { readFileInput } from '../../../utils/file'
 import FileInput from '../FileInput'
 import { HiddenInput, MenuSelect } from '../AppMenu.css'
+
+const AddRomFileInput = styled(FileInput)`
+  margin-bottom: 1rem;
+`
 
 const GameSelect = ({ onChange }) => {
   const { initialized, playerRef, loadedGame, openROM } = usePlayer()
@@ -42,7 +47,7 @@ const GameSelect = ({ onChange }) => {
 
   return (
     <>
-      <FileInput
+      <AddRomFileInput
         inputRef={hiddenInputRef}
         accept=".gb,.gbc"
         label="Add ROM File"
@@ -61,7 +66,6 @@ const GameSelect = ({ onChange }) => {
               {game}
             </option>
           ))}
-          <option value="add">Add</option>
         </MenuSelect>
       )}
     </>

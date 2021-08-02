@@ -15,7 +15,7 @@ const SelectGame = () => {
     openROM,
     start,
     restart,
-    resume,
+    resume
   } = usePlayer()
   const { setMenu } = useSettings()
 
@@ -53,46 +53,6 @@ const SelectGame = () => {
       )}
     </>
   )
-
-  // return (
-  //   <div>
-  //     <MenuGroup horizontal>
-  //       {!!(initialized && loadedGame) && (
-  //         <MenuButton
-  //           onClick={(e) => {
-  //             e.stopPropagation()
-
-  //             if (playerRef.current.runInterval) {
-  //               restart()
-  //             } else {
-  //               start()
-  //             }
-  //           }}
-  //         >
-  //           Start
-  //         </MenuButton>
-  //       )}
-  //       {!!(initialized && loadedGame && freeze) && (
-  //         <MenuButton
-  //           onClick={(e) => {
-  //             e.stopPropagation()
-  //             resume()
-  //           }}
-  //         >
-  //           Resume
-  //         </MenuButton>
-  //       )}
-  //     </MenuGroup>
-  //     <MenuButton
-  //       onClick={(e) => {
-  //         e.stopPropagation()
-  //         setMenu('settings')
-  //       }}
-  //     >
-  //       Settings
-  //     </MenuButton>
-  //   </div>
-  // )
 }
 
 export default SelectGame

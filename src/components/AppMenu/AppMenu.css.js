@@ -104,7 +104,6 @@ export const MenuGroup = styled.div`
     props.horizontal &&
     css`
       display: flex;
-      margin: 0 -0.5rem;
       margin-bottom: 1.5rem;
 
       ${MenuInput} {

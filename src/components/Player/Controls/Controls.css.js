@@ -73,6 +73,7 @@ export const ControlOutline = styled.span`
     hsla(0, 0%, 0%, 0)
   );
   overflow: hidden;
+  transition: 75ms;
 
   ${({ colorName, pressed }) => {
     const colors = shadows(colorName)
