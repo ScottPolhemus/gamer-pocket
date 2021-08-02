@@ -5,10 +5,13 @@
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "ASSET_PATH=https://polhem.us/gamer-pocket/ npm run build && gh-pages -d build"
   },
   "engines": {
     "node": "14.x"
+  },
+  "glitch": {
+    "projectType": "generated_static"
   },
   "dependencies": {
     "color": "^3.1.3",

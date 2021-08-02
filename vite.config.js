@@ -3,6 +3,7 @@ import reactRefresh from '@vitejs/plugin-react-refresh'
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  base: process.env.ASSET_PATH || `/`,
   plugins: [
     reactRefresh(),
     VitePWA({
