@@ -1,7 +1,7 @@
-import React from 'react'
+import * as React from 'react'
 
 import { usePlayer } from '../../../services/player'
-import { useSettings } from '../../../services/settings'
+import { useSettings, MenuOption } from '../../../services/settings'
 import { MenuTitle, MenuGroup, MenuButton } from '../AppMenu.css'
 
 const PauseMenu = () => {
@@ -32,7 +32,7 @@ const PauseMenu = () => {
       <MenuButton
         onClick={(e) => {
           e.stopPropagation()
-          setMenu('save')
+          setMenu(MenuOption.Save)
         }}
       >
         Manage Save

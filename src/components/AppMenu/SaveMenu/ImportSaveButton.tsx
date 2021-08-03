@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 import { usePlayer } from '../../../services/player'
 import { stringToArrayBuffer, fromTypedArray } from '../../../utils/file'
@@ -12,6 +12,9 @@ const ImportSaveButton = () => {
       label="Import Save File"
       accept=".sav"
       onChange={(file) => {
+        if (!file) {
+          throw new Error('Save file failed to load')
+        }
         const saveBuffer = stringToArrayBuffer(file)
         const save = fromTypedArray(new Uint8Array(saveBuffer))
 

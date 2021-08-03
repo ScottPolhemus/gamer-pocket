@@ -1,6 +1,11 @@
-import React from 'react'
+import * as React from 'react'
 
-import { useControls } from '../../../services/controls'
+import {
+  useControls,
+  Control,
+  ControlSize,
+  ControlPosition,
+} from '../../../services/controls'
 import { useSettings } from '../../../services/settings'
 import {
   ControlsContainer,
@@ -8,7 +13,17 @@ import {
   ControlOutline,
 } from './Controls.css'
 
-const Controls = ({ controls, group, size, position }) => {
+const Controls = ({
+  controls,
+  group,
+  size,
+  position,
+}: {
+  controls: Control[]
+  group: string
+  size: ControlSize
+  position: ControlPosition
+}) => {
   const { groupRefs, pressed } = useControls()
   const { color } = useSettings()
 

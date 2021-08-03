@@ -1,9 +1,18 @@
 import styled, { css } from 'styled-components'
 
+import { ColorOption } from '../../../services/settings'
+import {
+  Control,
+  ControlSize,
+  ControlPosition,
+  ControlType,
+} from '../../../services/controls'
 import { screenVertical3x } from '../../../styles/mq'
 import { shadows } from '../../../styles/color'
 
-export const ControlsContainer = styled.div`
+export const ControlsContainer = styled.div<{
+  position: ControlPosition
+}>`
   position: relative;
   display: flex;
   align-items: center;
@@ -53,7 +62,7 @@ export const ControlsContainer = styled.div`
   }
 `
 
-export const ControlsInner = styled.div`
+export const ControlsInner = styled.div<ControlSize>`
   position: relative;
   display: block;
 
@@ -63,7 +72,13 @@ export const ControlsInner = styled.div`
   `}
 `
 
-export const ControlOutline = styled.span`
+export const ControlOutline = styled.span<
+  {
+    colorName: ColorOption
+    pressed: boolean
+    size: ControlSize
+  } & Control
+>`
   position: absolute;
   display: block;
   z-index: -1;
@@ -101,7 +116,7 @@ export const ControlOutline = styled.span`
   }
 
   ${(props) =>
-    props.type === 'circle' &&
+    props.type === ControlType.Circle &&
     css`
       top: ${100 * ((props.pos.y - props.pos.r) / props.size.height)}%;
       left: ${100 * ((props.pos.x - props.pos.r) / props.size.width)}%;
@@ -111,7 +126,7 @@ export const ControlOutline = styled.span`
     `}
 
   ${(props) =>
-    props.type === 'pill' &&
+    props.type === ControlType.Pill &&
     css`
       top: ${100 * (props.pos.y / props.size.height)}%;
       left: ${100 * (props.pos.x / props.size.width)}%;

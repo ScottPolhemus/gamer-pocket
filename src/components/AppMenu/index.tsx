@@ -1,7 +1,7 @@
-import React from 'react'
+import * as React from 'react'
 
 import { usePlayer } from '../../services/player'
-import { useSettings } from '../../services/settings'
+import { useSettings, MenuOption } from '../../services/settings'
 import { MenuContainer, MenuBody, MenuFooter, MenuButton } from './AppMenu.css'
 import StartMenu from './StartMenu'
 import PauseMenu from './PauseMenu'
@@ -22,8 +22,8 @@ const AppMenu = () => {
         ) : (
           <>
             {!menu && <StartMenu />}
-            {menu === `settings` && <SettingsMenu />}
-            {menu === `save` && <SaveMenu />}
+            {menu === MenuOption.Settings && <SettingsMenu />}
+            {menu === MenuOption.Save && <SaveMenu />}
           </>
         )}
       </MenuBody>
@@ -32,7 +32,7 @@ const AppMenu = () => {
           <MenuButton
             onClick={(e) => {
               e.stopPropagation()
-              setMenu('')
+              setMenu(MenuOption.Player)
             }}
           >
             Back

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import * as React from 'react'
 import styled from 'styled-components'
 
 import { usePlayer } from '../../../services/player'
@@ -6,19 +6,24 @@ import { readFileInput } from '../../../utils/file'
 import FileInput from '../FileInput'
 import { HiddenInput, MenuSelect } from '../AppMenu.css'
 
-const AddRomFileInput = styled(FileInput)`
-  margin-bottom: 1rem;
-`
-
-const GameSelect = ({ onChange }) => {
+const GameSelect = ({
+  selectedGame,
+  setSelectedGame,
+}: {
+  selectedGame: string
+  setSelectedGame: React.Dispatch<React.SetStateAction<string>>
+}) => {
   const { initialized, playerRef, loadedGame, openROM } = usePlayer()
-  const [ready, setReady] = useState(false)
-  const [availableGames, setAvailableGames] = useState([])
-  const [selectedGame, setSelectedGame] = useState('');
-  const hiddenInputRef = useRef()
+  const [ready, setReady] = React.useState(false)
+  const [availableGames, setAvailableGames] = React.useState<string[]>([])
+  const hiddenInputRef = React.useRef<HTMLInputElement | null>(null)
 
   const updateAvailableGames = () => {
     if (initialized) {
+      if (!playerRef.current) {
+        throw new Error('Missing GameBoyPlayer instance')
+      }
+
       playerRef.current.getStorageKeys().then((keys) => {
         const games = keys
           .filter((key) => key.indexOf('ROM_') === 0)
@@ -29,15 +34,15 @@ const GameSelect = ({ onChange }) => {
     }
   }
 
-  useEffect(updateAvailableGames, [initialized])
+  React.useEffect(updateAvailableGames, [initialized])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (selectedGame) {
-      if (selectedGame === 'add') {
-        hiddenInputRef.current.click()
-      } else {
-        playerRef.current.loadROM(selectedGame).then(openROM)
+      if (!playerRef.current) {
+        throw new Error('Missing GameBoyPlayer instance')
       }
+
+      playerRef.current.loadROM(selectedGame).then(openROM)
     }
   }, [selectedGame])
 
@@ -47,26 +52,34 @@ const GameSelect = ({ onChange }) => {
 
   return (
     <>
-      <AddRomFileInput
-        inputRef={hiddenInputRef}
-        accept=".gb,.gbc"
-        label="Add ROM File"
-        onChange={(file) => openROM(file).then(updateAvailableGames)}
-      />
       {!!availableGames.length && (
         <MenuSelect
-          value={loadedGame}
+          value={selectedGame}
           onChange={(event) => {
             setSelectedGame(event.target.value || ``)
           }}
         >
-          <option key="game-select">Select game</option>
+          <option key="game-select" value="">
+            Select game
+          </option>
           {availableGames.map((game) => (
             <option key={`game-${game}`} value={game}>
               {game}
             </option>
           ))}
         </MenuSelect>
+      )}
+      {!selectedGame && (
+        <FileInput
+          inputRef={hiddenInputRef}
+          accept=".gb,.gbc"
+          label="Add ROM File"
+          onChange={(file) => {
+            if (file) {
+              return openROM(file).then(updateAvailableGames)
+            }
+          }}
+        />
       )}
     </>
   )

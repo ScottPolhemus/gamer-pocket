@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 import { usePlayer } from '../../services/player'
 import Icon from '../Icon'
@@ -26,7 +26,7 @@ const MuteButton = () => {
           }
         }}
       />
-      <ToggleOutline tabIndex="0">
+      <ToggleOutline tabIndex={0}>
         <Icon name={muted ? `volume_off` : `volume_up`} />
       </ToggleOutline>
       <ToggleText>Mute</ToggleText>

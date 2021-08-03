@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 import { ControlsProvider } from '../services/controls'
 import { PlayerProvider } from '../services/player'

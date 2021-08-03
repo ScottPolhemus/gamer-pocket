@@ -2,11 +2,20 @@ import { css } from 'styled-components'
 import Color from 'color'
 import colorValues from 'color-name'
 
-export const rgb = (colorName) => colorValues[colorName]
+import { ColorOption } from '../services/settings'
 
-export const color = (colorName) => new Color.rgb(rgb(colorName))
+export type ValidColor =
+  | ColorOption
+  | 'black'
+  | 'white'
+  | 'lightgray'
+  | 'orange'
 
-export const shadows = (colorName) => {
+export const rgb = (colorName: ValidColor) => colorValues[colorName]
+
+export const color = (colorName: ValidColor) => Color.rgb(rgb(colorName))
+
+export const shadows = (colorName: ValidColor) => {
   const baseColor = color(colorName)
 
   return {
@@ -16,8 +25,8 @@ export const shadows = (colorName) => {
   }
 }
 
-export const buttonShadow = (colorValue) => {
-  const baseColor = color(colorValue)
+export const buttonShadow = (colorName: ValidColor) => {
+  const baseColor = color(colorName)
 
   return css`
     background: linear-gradient(

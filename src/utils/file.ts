@@ -1,4 +1,4 @@
-export const stringToArrayBuffer = (string) => {
+export const stringToArrayBuffer = (string: string) => {
   const buffer = new ArrayBuffer(string.length)
   const bufferView = new Uint8Array(buffer)
 
@@ -9,7 +9,7 @@ export const stringToArrayBuffer = (string) => {
   return buffer
 }
 
-export const fromTypedArray = (baseArray) => {
+export const fromTypedArray = (baseArray: Uint8Array) => {
   try {
     if (!baseArray || !baseArray.length) {
       return []
@@ -28,28 +28,34 @@ export const fromTypedArray = (baseArray) => {
   }
 }
 
-export const createDataUrl = (fileContents) => {
+export const createDataUrl = (
+  fileContents: ArrayBufferLike
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     const blob = new Blob([new Uint8Array(fileContents)], {
       type: 'application/octet-binary',
     })
     reader.onload = (e) => {
-      resolve(e.target.result)
+      if (e.target) {
+        resolve(e.target.result as string)
+      } else {
+        reject()
+      }
     }
     reader.readAsDataURL(blob)
   })
 }
 
-export const readFileInput = (input) =>
+export const readFileInput = (input: HTMLInputElement): Promise<string> =>
   new Promise((resolve, reject) => {
     try {
-      if (input.files.length > 0) {
+      if (input.files && input.files.length > 0) {
         const reader = new FileReader()
 
         reader.addEventListener('load', () => {
           if (reader.readyState === 2) {
-            resolve(reader.result)
+            resolve(reader.result as string)
           }
         })
 
