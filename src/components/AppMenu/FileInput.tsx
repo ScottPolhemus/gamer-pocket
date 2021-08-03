@@ -13,7 +13,7 @@ const FileInput = ({
   label: string
   accept: string
   inputRef?: React.MutableRefObject<HTMLInputElement | null>
-}) => {
+}): JSX.Element => {
   const hiddenInputRef = React.useRef<HTMLInputElement | null>(null)
   const onClick = () => {
     inputRef && inputRef.current

@@ -4,7 +4,7 @@ import { usePlayer } from '../../../services/player'
 import { useSettings, MenuOption } from '../../../services/settings'
 import { MenuTitle, MenuGroup, MenuButton } from '../AppMenu.css'
 
-const PauseMenu = () => {
+const PauseMenu = (): JSX.Element => {
   const { restart, stop } = usePlayer()
   const { setMenu } = useSettings()
 

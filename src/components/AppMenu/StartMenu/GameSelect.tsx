@@ -1,10 +1,8 @@
 import * as React from 'react'
-import styled from 'styled-components'
 
 import { usePlayer } from '../../../services/player'
-import { readFileInput } from '../../../utils/file'
 import FileInput from '../FileInput'
-import { HiddenInput, MenuSelect } from '../AppMenu.css'
+import { MenuSelect } from '../AppMenu.css'
 
 const GameSelect = ({
   selectedGame,
@@ -12,8 +10,8 @@ const GameSelect = ({
 }: {
   selectedGame: string
   setSelectedGame: React.Dispatch<React.SetStateAction<string>>
-}) => {
-  const { initialized, playerRef, loadedGame, openROM } = usePlayer()
+}): JSX.Element | null => {
+  const { initialized, playerRef, openROM } = usePlayer()
   const [ready, setReady] = React.useState(false)
   const [availableGames, setAvailableGames] = React.useState<string[]>([])
   const hiddenInputRef = React.useRef<HTMLInputElement | null>(null)

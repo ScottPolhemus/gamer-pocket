@@ -16,7 +16,7 @@ export const ControlsContext = React.createContext<ControlsContextValue | null>(
 )
 
 // Provider component for generating controls context and handling effects
-export const ControlsProvider = ({ children }: { children: JSX.Element }) => {
+export const ControlsProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { playerRef } = usePlayer()
 
   const groupRefs = controlsConfig.reduce(
@@ -218,7 +218,7 @@ export const ControlsProvider = ({ children }: { children: JSX.Element }) => {
 }
 
 // Hook for providing controller context to components
-export const useControls = () => {
+export const useControls = (): ControlsContextValue => {
   const controls = React.useContext(ControlsContext)
 
   if (!controls) {
@@ -283,7 +283,6 @@ const lgR = 75
 const smR = 50
 const pillW = 100
 const pillH = 30
-const pillR = pillH / 2
 const pillMargin = 30
 
 // Control group configurations

@@ -4,7 +4,7 @@ import { usePlayer } from '../../../services/player'
 import { MenuButton, MenuGroup } from '../AppMenu.css'
 import GameSelect from './GameSelect'
 
-const SelectGame = () => {
+const SelectGame = (): JSX.Element => {
   const { playerRef, initialized, loadedGame, freeze, start, restart, resume } =
     usePlayer()
   const [selectedGame, setSelectedGame] = React.useState('')
@@ -33,7 +33,7 @@ const SelectGame = () => {
             >
               Start
             </MenuButton>
-            {!!freeze ? (
+            {freeze ? (
               <MenuButton
                 onClick={(e) => {
                   e.stopPropagation()

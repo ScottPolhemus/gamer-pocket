@@ -10,7 +10,7 @@ import SettingsMenu from './SettingsMenu'
 import MuteButton from './MuteButton'
 import SettingsButton from './SettingsButton'
 
-const AppMenu = () => {
+const AppMenu = (): JSX.Element => {
   const { paused } = usePlayer()
   const { menu, setMenu } = useSettings()
 

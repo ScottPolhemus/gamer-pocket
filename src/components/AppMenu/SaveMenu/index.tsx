@@ -6,7 +6,7 @@ import { MenuTitle, MenuGroup } from '../AppMenu.css'
 import ExportSaveButton from './ExportSaveButton'
 import ImportSaveButton from './ImportSaveButton'
 
-const SaveMenu = () => {
+const SaveMenu = (): JSX.Element => {
   const { loadedGame, currentGame } = usePlayer()
   const { setMenu } = useSettings()
   const game = loadedGame || currentGame

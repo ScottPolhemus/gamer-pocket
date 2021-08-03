@@ -12,7 +12,7 @@ declare module 'gameboy' {
   export default class GameBoyPlayer {
     core: GameBoyCore
     runInterval?: number
-    constructor(HTMLCanvasElement, GameBoyPlayerOptions)
+    constructor(canvas: HTMLCanvasElement, options: GameBoyPlayerOptions)
     openROM(romFile: string): Promise<void>
     saveROM(name: string, romFile: string): Promise<void>
     loadROM(name: string): Promise<string>

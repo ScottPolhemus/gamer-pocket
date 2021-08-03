@@ -59,7 +59,7 @@ export const PlayerContext = React.createContext<PlayerContextValue | null>(
   null
 )
 
-export const PlayerProvider = ({ children }: { children: JSX.Element }) => {
+export const PlayerProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
   const playerRef = React.useRef<GameBoyPlayer | null>(null)
   const screenCanvasRef = React.useRef<HTMLCanvasElement | null>(null)
   const [loadedGame, setLoadedGame] = React.useState<string>(``)
@@ -73,12 +73,16 @@ export const PlayerProvider = ({ children }: { children: JSX.Element }) => {
   const [initialized, setInitialized] = React.useState(false)
   const [playing, setPlaying] = React.useState(false)
   const [paused, setPaused] = React.useState(false)
-  const [pageHidden, setPageHidden] = React.useState(false)
-  const [pageFocused, setPageFocused] = React.useState(true)
+  const [pageHidden, setPageHidden] = React.useState(false) // eslint-disable-line
+  const [pageFocused, setPageFocused] = React.useState(true) // eslint-disable-line
 
   // Initialize GameBoyPlayer on mount
   React.useEffect(() => {
     if (!initialized) {
+      if (!screenCanvasRef.current) {
+        throw new Error('Missing screen canvas')
+      }
+
       playerRef.current = new GameBoyPlayer(screenCanvasRef.current, {
         mediaStreamWorkerSrc: `${
           import.meta.env.BASE_URL

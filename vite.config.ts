@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import { VitePWA } from 'vite-plugin-pwa'
+import eslintPlugin from 'vite-plugin-eslint'
 
 export default defineConfig({
   base: process.env.ASSET_PATH || `/`,
   plugins: [
+    eslintPlugin(),
     reactRefresh(),
     VitePWA({
       workbox: {

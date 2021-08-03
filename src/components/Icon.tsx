@@ -5,7 +5,10 @@ const I = styled.i`
   display: block;
 `
 
-const Icon = ({ name = ``, className = `` }) => (
+const Icon = ({ name = ``, className = `` }: {
+  name: string,
+  className?: string,
+}): JSX.Element => (
   <I className={`material-icons ${className}`.trim()}>{name}</I>
 )
 

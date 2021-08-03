@@ -11,7 +11,7 @@ import {
   ScreenTitle,
 } from './Screen.css'
 
-const Screen = ({ children }: { children: JSX.Element }) => {
+const Screen = ({ children }: { children: JSX.Element }): JSX.Element => {
   const {
     screenCanvasRef,
     freezeScreen,

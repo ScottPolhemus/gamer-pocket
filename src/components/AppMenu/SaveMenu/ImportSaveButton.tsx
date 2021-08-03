@@ -4,7 +4,7 @@ import { usePlayer } from '../../../services/player'
 import { stringToArrayBuffer, fromTypedArray } from '../../../utils/file'
 import FileInput from '../FileInput'
 
-const ImportSaveButton = () => {
+const ImportSaveButton = (): JSX.Element => {
   const { restart, setSRAM } = usePlayer()
 
   return (

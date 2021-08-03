@@ -9,7 +9,7 @@ import Controls from './Controls'
 import Screen from './Screen'
 import { PlayerContainer } from './Player.css'
 
-const Player = ({ children }: { children: JSX.Element }) => {
+const Player = ({ children }: { children: JSX.Element }): JSX.Element => {
   const [icon, setIcon] = React.useState('')
   const { color } = useSettings()
 

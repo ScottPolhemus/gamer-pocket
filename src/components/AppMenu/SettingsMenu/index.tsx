@@ -21,7 +21,7 @@ const colors = [
   { Black: ColorOption.Black },
 ]
 
-const Settings = () => {
+const Settings = (): JSX.Element => {
   const { color, setColor, screenFilter, setScreenFilter } = useSettings()
 
   const onChangeColor = (event: React.ChangeEvent<HTMLInputElement>) =>

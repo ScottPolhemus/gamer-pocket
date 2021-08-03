@@ -4,7 +4,8 @@ import { useSettings, MenuOption } from '../../services/settings'
 import Icon from '../Icon'
 
 import { SettingsLink, ToggleText, ToggleOutline } from './AppMenu.css'
-const SettingsButton = () => {
+
+const SettingsButton = (): JSX.Element => {
   const { setMenu } = useSettings()
 
   return (

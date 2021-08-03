@@ -9,7 +9,7 @@ import {
   ToggleOutline,
 } from './AppMenu.css'
 
-const MuteButton = () => {
+const MuteButton = (): JSX.Element => {
   const { muted, mute, unMute } = usePlayer()
 
   return (

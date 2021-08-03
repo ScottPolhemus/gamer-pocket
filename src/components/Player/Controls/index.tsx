@@ -23,7 +23,7 @@ const Controls = ({
   group: string
   size: ControlSize
   position: ControlPosition
-}) => {
+}): JSX.Element => {
   const { groupRefs, pressed } = useControls()
   const { color } = useSettings()
 

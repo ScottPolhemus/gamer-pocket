@@ -1,6 +1,6 @@
-import { css } from 'styled-components'
+import { css, FlattenSimpleInterpolation } from 'styled-components'
 import Color from 'color'
-import colorValues from 'color-name'
+import colorValues, { RGB } from 'color-name'
 
 import { ColorOption } from '../services/settings'
 
@@ -11,11 +11,15 @@ export type ValidColor =
   | 'lightgray'
   | 'orange'
 
-export const rgb = (colorName: ValidColor) => colorValues[colorName]
+export const rgb = (colorName: ValidColor): RGB => colorValues[colorName]
 
-export const color = (colorName: ValidColor) => Color.rgb(rgb(colorName))
+export const color = (colorName: ValidColor): Color => Color.rgb(rgb(colorName))
 
-export const shadows = (colorName: ValidColor) => {
+export const shadows = (colorName: ValidColor): {
+  background: string,
+  light: string,
+  dark: string,
+} => {
   const baseColor = color(colorName)
 
   return {
@@ -25,7 +29,7 @@ export const shadows = (colorName: ValidColor) => {
   }
 }
 
-export const buttonShadow = (colorName: ValidColor) => {
+export const buttonShadow = (colorName: ValidColor): FlattenSimpleInterpolation => {
   const baseColor = color(colorName)
 
   return css`

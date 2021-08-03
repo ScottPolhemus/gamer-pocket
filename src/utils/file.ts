@@ -1,4 +1,4 @@
-export const stringToArrayBuffer = (string: string) => {
+export const stringToArrayBuffer = (string: string): ArrayBuffer => {
   const buffer = new ArrayBuffer(string.length)
   const bufferView = new Uint8Array(buffer)
 
@@ -9,14 +9,14 @@ export const stringToArrayBuffer = (string: string) => {
   return buffer
 }
 
-export const fromTypedArray = (baseArray: Uint8Array) => {
+export const fromTypedArray = (baseArray: Uint8Array): number[] | Uint8Array => {
   try {
     if (!baseArray || !baseArray.length) {
       return []
     }
 
-    var arrayTemp = []
-    for (var index = 0; index < baseArray.length; ++index) {
+    const arrayTemp = []
+    for (let index = 0; index < baseArray.length; ++index) {
       arrayTemp[index] = baseArray[index]
     }
 

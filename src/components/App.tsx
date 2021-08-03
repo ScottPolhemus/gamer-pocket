@@ -6,7 +6,7 @@ import { SettingsProvider } from '../services/settings'
 import AppMenu from './AppMenu'
 import Player from './Player'
 
-const App = () => (
+const App = (): JSX.Element => (
   <SettingsProvider>
     <PlayerProvider>
       <ControlsProvider>

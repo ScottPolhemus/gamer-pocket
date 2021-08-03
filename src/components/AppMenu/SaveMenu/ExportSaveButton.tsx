@@ -4,7 +4,7 @@ import { usePlayer } from '../../../services/player'
 import { createDataUrl } from '../../../utils/file'
 import { MenuButton } from '../AppMenu.css'
 
-const ExportSaveButton = () => {
+const ExportSaveButton = (): JSX.Element => {
   const anchorRef = React.useRef<HTMLAnchorElement | null>(null)
   const [fileURL, setFileURL] = React.useState('')
   const { currentGame, loadedGame, getSRAM } = usePlayer()
