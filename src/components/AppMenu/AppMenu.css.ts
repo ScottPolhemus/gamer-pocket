@@ -104,7 +104,7 @@ export const HiddenInput = styled.input`
 `
 
 export const MenuGroup = styled.div<{
-  children: JSX.Element
+  children: JSX.Element | JSX.Element[]
   horizontal?: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement>
 }>`

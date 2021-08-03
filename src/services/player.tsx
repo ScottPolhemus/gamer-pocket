@@ -22,7 +22,7 @@ interface PlayerContextValue {
   setMuted: React.Dispatch<React.SetStateAction<PlayerContextValue['muted']>>
   freeze: string | null
   setFreeze: React.Dispatch<React.SetStateAction<PlayerContextValue['freeze']>>
-  freezeScreen: string | null
+  freezeScreen: ImageData | null
   setFreezeScreen: React.Dispatch<
     React.SetStateAction<PlayerContextValue['freezeScreen']>
   >
@@ -69,7 +69,7 @@ export const PlayerProvider = ({ children }: { children: JSX.Element }) => {
   )
   const [muted, setMuted] = useLocalStorageState<boolean>('muted', false)
   const [freeze, setFreeze] = React.useState<string | null>(null)
-  const [freezeScreen, setFreezeScreen] = React.useState<string | null>(null)
+  const [freezeScreen, setFreezeScreen] = React.useState<ImageData | null>(null)
   const [initialized, setInitialized] = React.useState(false)
   const [playing, setPlaying] = React.useState(false)
   const [paused, setPaused] = React.useState(false)

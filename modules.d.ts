@@ -28,7 +28,7 @@ declare module 'gameboy' {
     buttonUp(button: string): void
     autoFreeze(): Promise<void>
     loadFreeze(key: string): Promise<string>
-    loadFreezeScreen(key: string): Promise<string>
+    loadFreezeScreen(key: string): Promise<ImageData>
   }
 }
 

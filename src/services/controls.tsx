@@ -4,29 +4,6 @@ import SAT from 'sat'
 
 import { usePlayer } from './player'
 
-export enum ColorOption {
-  Purple = 'rebeccapurple',
-  Pink = 'deeppink',
-  Red = 'crimson',
-  Yellow = 'gold',
-  Lime = 'limegreen',
-  Green = 'seagreen',
-  Teal = 'teal',
-  Ice = 'deepskyblue',
-  Blue = 'mediumblue',
-  Silver = 'lightsteelblue',
-  Black = 'black',
-}
-
-export enum ScreenFilterOption {
-  None = 'none',
-  LCD = 'lcd',
-}
-
-export enum MenuOption {
-  Player = '',
-}
-
 interface ControlsContextValue {
   groupRefs: {
     [groupId: string]: React.MutableRefObject<HTMLDivElement | null>
