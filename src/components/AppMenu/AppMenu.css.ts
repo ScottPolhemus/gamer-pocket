@@ -40,6 +40,7 @@ export const MenuTitle = styled.h2`
 
 const menuInputBase = css`
   appearance: none;
+  -webkit-tap-highlight-color: transparent;
   width: 100%;
   padding: 0.5rem;
   margin: 0;
@@ -68,6 +69,7 @@ export const MenuButton = styled.button`
   border-top-color: gray;
   color: hsl(0, 0%, 40%);
   text-shadow: -1px -1px 0 hsla(0, 0%, 5%, 0.25);
+  outline: none;
 
   &::before {
     display: none;
@@ -137,6 +139,7 @@ export const ToggleLabel = styled.label`
   position: relative;
   display: inline-block;
   vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
 `
 
 export const ToggleInput = styled.input`
@@ -157,7 +160,7 @@ export const ToggleOutline = styled(MenuButton).attrs({
   vertical-align: middle;
 
   input:checked + & {
-    ${buttonShadow('orange')}
+    ${buttonShadow('darkorange')}
   }
 `
 
