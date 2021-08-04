@@ -1,40 +1,37 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import * as React from 'react'
 import _ from 'lodash'
 import SAT from 'sat'
 
 import { usePlayer } from './player'
 
-// Sizing constants
-const lgR = 75
-const smR = 50
-const pillW = 100
-const pillH = 30
-const pillR = pillH / 2
-const pillMargin = 30
+interface ControlsContextValue {
+  groupRefs: {
+    [groupId: string]: React.MutableRefObject<HTMLDivElement | null>
+  }
+  pressed: string[]
+}
 
-export const ControlsContext = createContext()
+export const ControlsContext = React.createContext<ControlsContextValue | null>(
+  null
+)
 
 // Provider component for generating controls context and handling effects
-export const ControlsProvider = ({ children }) => {
+export const ControlsProvider = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { playerRef } = usePlayer()
 
   const groupRefs = controlsConfig.reduce(
-    (refs, g) => ({ ...refs, [g.group]: useRef() }),
+    (refs, g) => ({
+      ...refs,
+      [g.group]: React.useRef<HTMLDivElement | null>(null),
+    }),
     {}
-  )
-  const [touches, setTouches] = useState([])
-  const [keysDown, setKeysDown] = useState([])
-  const [pressed, setPressed] = useState([])
+  ) as ControlsContextValue['groupRefs']
+  const [touches, setTouches] = React.useState([] as Touch[])
+  const [keysDown, setKeysDown] = React.useState([] as KeyboardEvent['code'][])
+  const [pressed, setPressed] = React.useState([] as string[])
 
   // Update pressed controls based on current touches and keys down
-  useEffect(() => {
+  React.useEffect(() => {
     const touchPressedControls = touches.reduce((arr, t) => {
       const tX = t.clientX
       const tY = t.clientY
@@ -50,6 +47,10 @@ export const ControlsProvider = ({ children }) => {
 
         // TODO: Update to use bounding boxes of ControlOutline elements
         const gInner = gRef.firstElementChild
+        if (!gInner) {
+          throw new Error('Control group missing children')
+        }
+
         const gControls = g.controls
         const gBB = gInner.getBoundingClientRect()
         const gX = gBB.x
@@ -59,15 +60,16 @@ export const ControlsProvider = ({ children }) => {
           const btn = gControls[k]
           const btnX = gX + btn.pos.x / 2
           const btnY = gY + btn.pos.y / 2
-          const btnR = btn.pos.r / 2
 
-          if (btn.type === `circle`) {
+          if (btn.type === ControlType.Circle) {
+            const btnR = btn.pos.r / 2
+
             const btnCircle = new SAT.Circle(new SAT.Vector(btnX, btnY), btnR)
             const isPressed = SAT.testCircleCircle(tCircle, btnCircle)
             if (isPressed) {
               arr.push(btn.name)
             }
-          } else if (btn.type === `pill`) {
+          } else if (btn.type === ControlType.Pill) {
             const btnRect = new SAT.Box(
               new SAT.Vector(btnX, btnY),
               btn.pos.w / 2,
@@ -82,7 +84,7 @@ export const ControlsProvider = ({ children }) => {
       }
 
       return arr
-    }, [])
+    }, [] as string[])
 
     const keyPressedControls = keysDown.map((keyCode) => keyboardMap[keyCode])
 
@@ -90,19 +92,19 @@ export const ControlsProvider = ({ children }) => {
 
     // Call player APIs to press/unpress buttons on changes
     if (playerRef.current && !_.isEqual(nextPressed, pressed)) {
-      _.difference(nextPressed, pressed).forEach((button) =>
-        playerRef.current.buttonDown(button)
-      )
-      _.difference(pressed, nextPressed).forEach((button) =>
-        playerRef.current.buttonUp(button)
-      )
+      _.difference(nextPressed, pressed).forEach((button) => {
+        playerRef.current?.buttonDown(button)
+      })
+      _.difference(pressed, nextPressed).forEach((button) => {
+        playerRef.current?.buttonUp(button)
+      })
     }
 
     setPressed(nextPressed)
   }, [touches, keysDown])
 
   // Handle touch start events
-  const onTouchStart = useCallback((event) => {
+  const onTouchStart = React.useCallback((event) => {
     if (
       !event.target.matches(
         `[data-screen], [data-screen] *, [role="listbox"], [role="listbox"] *`
@@ -121,7 +123,7 @@ export const ControlsProvider = ({ children }) => {
   }, [])
 
   // Handle touch move events
-  const onTouchMove = useCallback((event) => {
+  const onTouchMove = React.useCallback((event) => {
     setTouches((currentTouches) => {
       let newTouches = currentTouches.slice(0)
 
@@ -142,7 +144,7 @@ export const ControlsProvider = ({ children }) => {
   }, [])
 
   // Handle touch end/cancel events
-  const onTouchEnd = useCallback((event) => {
+  const onTouchEnd = React.useCallback((event) => {
     const cancelledIds = _.map(event.changedTouches, (t) => t.identifier)
 
     setTouches((currentTouches) => {
@@ -151,7 +153,7 @@ export const ControlsProvider = ({ children }) => {
   }, [])
 
   // Handle key down events
-  const onKeyDown = useCallback((event) => {
+  const onKeyDown = React.useCallback((event) => {
     setKeysDown((currentKeysDown) =>
       currentKeysDown.includes(event.keyCode)
         ? currentKeysDown
@@ -160,7 +162,7 @@ export const ControlsProvider = ({ children }) => {
   }, [])
 
   // Handle key up events
-  const onKeyUp = useCallback((event) => {
+  const onKeyUp = React.useCallback((event) => {
     setKeysDown((currentKeysDown) =>
       !currentKeysDown.includes(event.keyCode)
         ? currentKeysDown
@@ -169,13 +171,13 @@ export const ControlsProvider = ({ children }) => {
   }, [])
 
   // Handle resize events
-  const onResize = useCallback(() => setTouches([]), [])
+  const onResize = React.useCallback(() => setTouches([]), [])
 
   // Handle gesture start/end events
-  const cancelGesture = useCallback((event) => event.preventDefault(), [])
+  const cancelGesture = React.useCallback((event) => event.preventDefault(), [])
 
   // Bind event listeners to document and window
-  useEffect(() => {
+  React.useEffect(() => {
     document.addEventListener('touchstart', onTouchStart, { passive: false })
     document.addEventListener('touchmove', onTouchMove)
     document.addEventListener('touchend', onTouchEnd)
@@ -216,20 +218,78 @@ export const ControlsProvider = ({ children }) => {
 }
 
 // Hook for providing controller context to components
-export const useControls = () => {
-  const { groupRefs, pressed } = useContext(ControlsContext)
+export const useControls = (): ControlsContextValue => {
+  const controls = React.useContext(ControlsContext)
 
-  return {
-    groupRefs,
-    pressed,
+  if (!controls) {
+    throw new Error('Missing controls context')
   }
+
+  return controls
 }
 
+export enum ControlType {
+  Circle = 'circle',
+  Pill = 'pill',
+}
+
+export enum ControlPosition {
+  Left = 'left',
+  Right = 'right',
+  Bottom = 'bottom',
+}
+
+export interface ControlSize {
+  width: number
+  height: number
+}
+
+interface ControlGroup {
+  group: string
+  position: ControlPosition
+  size: ControlSize
+  controls: Control[]
+}
+
+interface CircleControl {
+  name: string
+  type: ControlType.Circle
+  pos: CircleControlPosition
+}
+
+interface PillControl {
+  name: string
+  type: ControlType.Pill
+  pos: PillControlPosition
+}
+
+export type Control = CircleControl | PillControl
+
+interface CircleControlPosition {
+  x: number
+  y: number
+  r: number
+}
+
+interface PillControlPosition {
+  x: number
+  y: number
+  w: number
+  h: number
+}
+
+// Sizing constants
+const lgR = 75
+const smR = 50
+const pillW = 100
+const pillH = 30
+const pillMargin = 30
+
 // Control group configurations
-export const controlsConfig = [
+export const controlsConfig: ControlGroup[] = [
   {
     group: `actions`,
-    position: `right`,
+    position: ControlPosition.Right,
     size: {
       width: smR * 2 * 3,
       height: smR * 2 * 3,
@@ -237,7 +297,7 @@ export const controlsConfig = [
     controls: [
       {
         name: `a`,
-        type: `circle`,
+        type: ControlType.Circle,
         pos: {
           x: smR * 2 * 3 - lgR,
           y: lgR * 1.5,
@@ -246,7 +306,7 @@ export const controlsConfig = [
       },
       {
         name: `b`,
-        type: `circle`,
+        type: ControlType.Circle,
         pos: {
           x: lgR,
           y: smR * 2 * 3 - lgR,
@@ -257,7 +317,7 @@ export const controlsConfig = [
   },
   {
     group: `options`,
-    position: `bottom`,
+    position: ControlPosition.Bottom,
     size: {
       width: pillW * 2 + pillMargin,
       height: pillH,
@@ -265,7 +325,7 @@ export const controlsConfig = [
     controls: [
       {
         name: `start`,
-        type: `pill`,
+        type: ControlType.Pill,
         pos: {
           x: pillW + pillMargin,
           y: 0,
@@ -275,7 +335,7 @@ export const controlsConfig = [
       },
       {
         name: `select`,
-        type: `pill`,
+        type: ControlType.Pill,
         pos: {
           x: 0,
           y: 0,
@@ -287,7 +347,7 @@ export const controlsConfig = [
   },
   {
     group: `dpad`,
-    position: `left`,
+    position: ControlPosition.Left,
     size: {
       width: smR * 2 * 3,
       height: smR * 2 * 3,
@@ -295,7 +355,7 @@ export const controlsConfig = [
     controls: [
       {
         name: `up`,
-        type: `circle`,
+        type: ControlType.Circle,
         pos: {
           x: (smR * 2 * 3) / 2,
           y: smR,
@@ -304,7 +364,7 @@ export const controlsConfig = [
       },
       {
         name: `down`,
-        type: `circle`,
+        type: ControlType.Circle,
         pos: {
           x: (smR * 2 * 3) / 2,
           y: smR * 2 * 3 - smR,
@@ -313,7 +373,7 @@ export const controlsConfig = [
       },
       {
         name: `left`,
-        type: `circle`,
+        type: ControlType.Circle,
         pos: {
           x: smR,
           y: (smR * 2 * 3) / 2,
@@ -322,7 +382,7 @@ export const controlsConfig = [
       },
       {
         name: `right`,
-        type: `circle`,
+        type: ControlType.Circle,
         pos: {
           x: smR * 2 * 3 - smR,
           y: (smR * 2 * 3) / 2,
@@ -334,7 +394,7 @@ export const controlsConfig = [
 ]
 
 // Keyboard key to emulator key map
-export const keyboardMap = {
+export const keyboardMap: Record<KeyboardEvent['code'], string> = {
   13: 'start',
   16: 'select',
   38: 'up',
@@ -360,7 +420,4 @@ export const keyboardMap = {
   188: 'a',
   190: 'b',
   77: 'b',
-  //49: "save",
-  //48: "load",
-  //80: "speed"
 }

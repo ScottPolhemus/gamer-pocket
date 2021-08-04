@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 
 import { buttonShadow, color } from '../../styles/color'
+import { MenuOption } from '../../services/settings'
 
 export const MenuContainer = styled.div`
   flex: 1;
@@ -8,7 +9,10 @@ export const MenuContainer = styled.div`
   flex-direction: column;
 `
 
-export const MenuBody = styled.div`
+export const MenuBody = styled.div<{
+  menu: MenuOption
+  paused: boolean
+}>`
   flex: 1;
 
   ${(props) =>
@@ -36,6 +40,7 @@ export const MenuTitle = styled.h2`
 
 const menuInputBase = css`
   appearance: none;
+  -webkit-tap-highlight-color: transparent;
   width: 100%;
   padding: 0.5rem;
   margin: 0;
@@ -62,8 +67,9 @@ export const MenuButton = styled.button`
   ${'' /* border-bottom-width: 3px; */}
   border-left-color: gray;
   border-top-color: gray;
-  color: hsl(0,0%,40%);
-  text-shadow: -1px -1px 0 hsla(0,0%,5%,0.25);
+  color: hsl(0, 0%, 40%);
+  text-shadow: -1px -1px 0 hsla(0, 0%, 5%, 0.25);
+  outline: none;
 
   &::before {
     display: none;
@@ -92,32 +98,33 @@ export const MenuButton = styled.button`
 `
 
 export const MenuSelect = styled(MenuInput).attrs({
-  as: `select`
+  as: `select`,
 })``
 
 export const HiddenInput = styled.input`
   display: none;
 `
 
-export const MenuGroup = styled.div`
+export const MenuGroup = styled.div<{
+  children: JSX.Element | JSX.Element[]
+  horizontal?: boolean
+  onClick?: React.MouseEventHandler<HTMLDivElement>
+}>`
   ${(props) =>
-    props.horizontal &&
-    css`
-      display: flex;
-      margin-bottom: 1.5rem;
+    props.horizontal
+      ? css`
+          display: flex;
+          margin-bottom: 1.5rem;
 
-      ${MenuInput} {
-        margin: 0 0.5rem;
-      }
-    `}
-
-  ${(props) =>
-    !props.horizontal &&
-    css`
-      ${MenuInput} {
-        margin-bottom: 1.5rem;
-      }
-    `}
+          ${MenuInput} {
+            margin: 0 0.5rem;
+          }
+        `
+      : css`
+          ${MenuInput}, ${MenuButton} {
+            margin-bottom: 1.5rem;
+          }
+        `}
 `
 
 export const SettingsButton = styled(MenuButton)`
@@ -132,6 +139,7 @@ export const ToggleLabel = styled.label`
   position: relative;
   display: inline-block;
   vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
 `
 
 export const ToggleInput = styled.input`
@@ -144,7 +152,7 @@ export const ToggleInput = styled.input`
 `
 
 export const ToggleOutline = styled(MenuButton).attrs({
-  as: 'span'
+  as: 'span',
 })`
   display: inline-block;
   width: auto;
@@ -152,7 +160,7 @@ export const ToggleOutline = styled(MenuButton).attrs({
   vertical-align: middle;
 
   input:checked + & {
-    ${buttonShadow('orange')}
+    ${buttonShadow('darkorange')}
   }
 `
 
@@ -161,7 +169,7 @@ export const ToggleText = styled.span`
   margin: 0 0.5rem;
   font-family: sans-serif;
   vertical-align: middle;
-  color: hsla(0,0%,100%,0.5);
+  color: hsla(0, 0%, 100%, 0.5);
 `
 
 export const SettingsLink = styled.a`

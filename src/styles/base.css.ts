@@ -1,8 +1,10 @@
 import { createGlobalStyle, css } from 'styled-components'
 
-import { rgb } from '../styles/color'
+import { rgb } from './color'
 
-export const BaseStyle = createGlobalStyle`
+import { ColorOption } from '../services/settings'
+
+export const BaseStyle = createGlobalStyle<{ colorName: ColorOption }>`
   body {
     position: fixed;
     top: 0;

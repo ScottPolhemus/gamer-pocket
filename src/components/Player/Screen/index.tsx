@@ -11,7 +11,7 @@ import {
   ScreenTitle,
 } from './Screen.css'
 
-const Screen = ({ children }) => {
+const Screen = ({ children }: { children: JSX.Element }): JSX.Element => {
   const {
     screenCanvasRef,
     freezeScreen,
@@ -27,7 +27,7 @@ const Screen = ({ children }) => {
   // Draw freezeScreen to canvas when present
   useEffect(() => {
     if (freezeScreen && paused && !playing && screenCanvasRef.current) {
-      screenCanvasRef.current.getContext('2d').putImageData(freezeScreen, 0, 0)
+      screenCanvasRef.current.getContext('2d')?.putImageData(freezeScreen, 0, 0)
     }
   }, [playing, paused, freezeScreen])
 
@@ -59,7 +59,7 @@ const Screen = ({ children }) => {
           paused={paused}
         />
         <ScreenCanvas
-          ref={screenCanvasRef}
+          ref={screenCanvasRef as React.RefObject<HTMLCanvasElement>}
           width="160"
           height="144"
           paused={paused}

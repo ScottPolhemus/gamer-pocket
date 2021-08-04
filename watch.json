@@ -7,11 +7,10 @@
   },
   "restart": {
     "include": [
-      "^\\.env$",
-      "^backend/"
+      "^\\.env$"
     ],
     "exclude": [
-      "src/" 
+      "src/"
     ]
   },
   "throttle": 250,

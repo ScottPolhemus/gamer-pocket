@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { controlsConfig } from '../../services/controls'
@@ -9,21 +9,21 @@ import Controls from './Controls'
 import Screen from './Screen'
 import { PlayerContainer } from './Player.css'
 
-const Player = ({ children }) => {
-  const [icon, setIcon] = useState('')
+const Player = ({ children }: { children: JSX.Element }): JSX.Element => {
+  const [icon, setIcon] = React.useState('')
   const { color } = useSettings()
 
-  useEffect(() => {
+  React.useEffect(() => {
     getIconData(color).then((iconData) => {
       setIcon(iconData)
     })
   }, [color])
 
-  useEffect(() => {
+  React.useEffect(() => {
     const existingAppIcon = document.querySelector(`#app-icon`)
 
     if (existingAppIcon) {
-      existingAppIcon.parentNode.removeChild(existingAppIcon)
+      existingAppIcon.parentNode?.removeChild(existingAppIcon)
     }
 
     const appIcon = document.createElement('link')

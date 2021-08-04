@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
 
 import { usePlayer } from '../../../services/player'
-import { useSettings } from '../../../services/settings'
+import { useSettings, MenuOption } from '../../../services/settings'
 import { MenuTitle, MenuGroup } from '../AppMenu.css'
 import ExportSaveButton from './ExportSaveButton'
 import ImportSaveButton from './ImportSaveButton'
 
-const SaveMenu = () => {
+const SaveMenu = (): JSX.Element => {
   const { loadedGame, currentGame } = usePlayer()
   const { setMenu } = useSettings()
   const game = loadedGame || currentGame
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!game) {
-      setMenu(``)
+      setMenu(MenuOption.Player)
     }
   }, [loadedGame, currentGame])
 

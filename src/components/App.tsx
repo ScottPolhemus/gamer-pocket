@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 import { ControlsProvider } from '../services/controls'
 import { PlayerProvider } from '../services/player'
@@ -6,7 +6,7 @@ import { SettingsProvider } from '../services/settings'
 import AppMenu from './AppMenu'
 import Player from './Player'
 
-const App = () => (
+const App = (): JSX.Element => (
   <SettingsProvider>
     <PlayerProvider>
       <ControlsProvider>

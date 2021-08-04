@@ -1,27 +1,33 @@
-import React from 'react'
+import * as React from 'react'
 
-import { useSettings } from '../../../services/settings'
+import {
+  useSettings,
+  ColorOption,
+  ScreenFilterOption,
+} from '../../../services/settings'
 import { MenuGroup, MenuSelect } from '../AppMenu.css'
 
 const colors = [
-  { Purple: 'rebeccapurple' },
-  { Pink: 'deeppink' },
-  { Red: 'crimson' },
-  { Yellow: 'gold' },
-  { Lime: 'limegreen' },
-  { Green: 'seagreen' },
-  { Teal: 'teal' },
-  { Ice: 'deepskyblue' },
-  { Blue: 'mediumblue' },
-  { Silver: 'lightsteelblue' },
-  { Black: 'black' },
+  { Purple: ColorOption.Purple },
+  { Pink: ColorOption.Pink },
+  { Red: ColorOption.Red },
+  { Yellow: ColorOption.Yellow },
+  { Lime: ColorOption.Lime },
+  { Green: ColorOption.Green },
+  { Teal: ColorOption.Teal },
+  { Ice: ColorOption.Ice },
+  { Blue: ColorOption.Blue },
+  { Silver: ColorOption.Silver },
+  { Black: ColorOption.Black },
 ]
 
-const Settings = () => {
+const Settings = (): JSX.Element => {
   const { color, setColor, screenFilter, setScreenFilter } = useSettings()
 
-  const onChangeColor = (event) => setColor(event.target.value)
-  const onChangeScreenFilter = (event) => setScreenFilter(event.target.value)
+  const onChangeColor = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setColor(event.target.value as ColorOption)
+  const onChangeScreenFilter = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setScreenFilter(event.target.value as ScreenFilterOption)
 
   return (
     <MenuGroup onClick={(event) => event.stopPropagation()}>

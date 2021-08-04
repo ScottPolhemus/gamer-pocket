@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 
+import { ColorOption, ScreenFilterOption } from '../../../services/settings'
 import {
   screenHorizontal,
   screen3x,
@@ -28,7 +29,11 @@ export const ScreenContainer = styled.div`
   }
 `
 
-export const ScreenBorder = styled.div`
+export const ScreenBorder = styled.div<{
+  colorName: ColorOption
+  playing: boolean
+  paused: boolean
+}>`
   position: relative;
   width: 320px;
   height: 288px;
@@ -91,7 +96,11 @@ export const ScreenContent = styled.div`
   background: hsla(0, 0%, 0%, 0);
 `
 
-export const ScreenOverlay = styled.span`
+export const ScreenOverlay = styled.span<{
+  filter: ScreenFilterOption
+  playing: boolean
+  paused: boolean
+}>`
   display: none;
   position: absolute;
   top: -1px;
@@ -161,7 +170,11 @@ export const ScreenOverlay = styled.span`
     `}
 `
 
-export const ScreenCanvas = styled.canvas`
+export const ScreenCanvas = styled.canvas<{
+  ref: React.RefObject<HTMLCanvasElement | null>
+  playing: boolean
+  paused: boolean
+}>`
   display: block;
   position: absolute;
   top: 0;

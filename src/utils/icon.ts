@@ -1,8 +1,8 @@
 import svgToImage from 'svg-to-image'
 
-import { rgb } from '../styles/color'
+import { rgb, ValidColor } from '../styles/color'
 
-const renderSVG = (colorName = 'rebeccapurple') => {
+const renderSVG = (colorName = 'rebeccapurple' as ValidColor) => {
   const [r, g, b] = rgb(colorName)
 
   return `
@@ -16,19 +16,21 @@ const renderSVG = (colorName = 'rebeccapurple') => {
   `
 }
 
-const imageToDataURL = (image) => {
-  var canvas = document.createElement('canvas')
+const imageToDataURL = (image: HTMLImageElement): string => {
+  const canvas = document.createElement('canvas')
 
   canvas.width = 512
   canvas.height = 512
-  canvas.getContext('2d').drawImage(image, 0, 0)
+  canvas.getContext('2d')?.drawImage(image, 0, 0)
 
   return canvas.toDataURL()
 }
 
-export const getIconData = (color = 'rebeccapurple') =>
+export const getIconData = (
+  color = 'rebeccapurple' as ValidColor
+): Promise<string> =>
   new Promise((resolve, reject) =>
-    svgToImage(renderSVG(color), (err, image) => {
+    svgToImage(renderSVG(color), (err: Error, image: HTMLImageElement) => {
       if (err) {
         return reject(err)
       }

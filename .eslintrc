@@ -1,26 +1,12 @@
 {
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
-    "prettier"
-  ],
-  "plugins": [
-    "react",
-    "react-hooks"
-  ],
-  "env": {
-    "browser": true,
-    "node": true,
-    "serviceworker": true
-  },
-  "globals": {
-    "ArrayBuffer": true,
-    "Float32Array": true,
-    "Uint8Array": true
-  },
-  "rules": {
-    "no-unused-vars": "warn",
-    "no-case-declarations": 0,
-    "react/prop-types": 0
-  }
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }
