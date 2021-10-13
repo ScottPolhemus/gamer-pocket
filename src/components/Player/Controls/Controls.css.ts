@@ -17,6 +17,7 @@ export const ControlsContainer = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 
   ${(props) =>
     props.position === 'left' &&
@@ -57,6 +58,10 @@ export const ControlsContainer = styled.div<{
       @media ${screenMicro} {
         margin-bottom: 1rem;
       }
+
+      @media ${screenMicroHorizontal} {
+        margin-bottom: 9px;
+      }
     `}
 
   @media (min-width: 636px) {
@@ -74,13 +79,22 @@ export const ControlsContainer = styled.div<{
   }
 `
 
-export const ControlsInner = styled.div<ControlSize>`
+export const ControlsInner = styled.div<ControlSize & {
+  position: ControlPosition
+}>`
   position: relative;
   display: block;
 
   ${(props) => css`
     width: ${props.width / 2}px;
     height: ${props.height / 2}px;
+  `}
+
+  ${(props) => props.position !== `bottom` && css`
+    @media ${screenMicroHorizontal} {
+      width: ${props.width / 3}px;
+      height: ${props.height / 3}px;
+    }
   `}
 `
 

@@ -29,7 +29,7 @@ const Controls = ({
 
   return (
     <ControlsContainer ref={groupRefs[group]} position={position}>
-      <ControlsInner {...size}>
+      <ControlsInner {...size} position={position}>
         {controls.map((control) => (
           <ControlOutline
             colorName={color}

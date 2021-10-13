@@ -83,10 +83,8 @@ export const ScreenBorder = styled.div<{
   }
 
   @media ${screenMicroHorizontal} {
-    width: 240px;
-    height: 216px;
-    border: 8px solid hsla(0, 0%, 0%, 0);
-    border-radius: 2px;
+    border: 0;
+    border-radius: 0;
   }
 
   ${(props) =>

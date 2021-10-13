@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components'
 
-import { screenMicroHorizontal } from '../../styles/mq'
 import { buttonShadow, color } from '../../styles/color'
 import { MenuOption } from '../../services/settings'
 
@@ -37,10 +36,6 @@ export const MenuTitle = styled.h2`
   font-family: sans-serif;
   text-align: center;
   color: white;
-
-  @media ${screenMicroHorizontal} {
-    font-size: 0.75rem;
-  }
 `
 
 const menuInputBase = css`
@@ -52,11 +47,6 @@ const menuInputBase = css`
   font-size: 1.25rem;
   border: 0;
   border-radius: 4px;
-
-  @media ${screenMicroHorizontal} {
-    font-size: 1rem;
-    padding: 0.25rem;
-  }
 `
 
 const MenuInput = styled.input`
@@ -180,10 +170,6 @@ export const ToggleText = styled.span`
   font-family: sans-serif;
   vertical-align: middle;
   color: hsla(0, 0%, 100%, 0.5);
-
-  @media ${screenMicroHorizontal} {
-    display: none;
-  }
 `
 
 export const SettingsLink = styled.a`
