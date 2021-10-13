@@ -1,4 +1,5 @@
 import * as React from 'react'
+import _ from 'lodash'
 
 import { usePlayer } from '../../../services/player'
 import FileInput from '../FileInput'
@@ -23,11 +24,20 @@ const GameSelect = ({
       }
 
       playerRef.current.getStorageKeys().then((keys) => {
+        const previousAvailableGames = availableGames
         const games = keys
           .filter((key) => key.indexOf('ROM_') === 0)
           .map((key) => key.slice('ROM_'.length))
         setAvailableGames(games)
         setReady(true)
+
+        if (games.length > previousAvailableGames.length) {
+          const newlyAdded = _.difference(games, availableGames) as string[]
+
+          if (newlyAdded.length === 1) {
+            setSelectedGame(newlyAdded[0])
+          }
+        }
       })
     }
   }

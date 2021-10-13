@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { screenVertical3x } from '../../styles/mq'
+import { screenVertical3x, screenMicro } from '../../styles/mq'
 
 export const PlayerContainer = styled.div`
   display: flex;
@@ -16,8 +16,14 @@ export const PlayerContainer = styled.div`
 
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-left);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 
   @media ${screenVertical3x} {
     justify-content: space-between;
+  }
+
+  @media ${screenMicro} {
+    align-content: space-between
   }
 `

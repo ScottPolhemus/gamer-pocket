@@ -6,6 +6,8 @@ import {
   screen3x,
   screen4x,
   screenVertical3x,
+  screenMicro,
+  screenMicroHorizontal,
 } from '../../../styles/mq'
 import { shadows } from '../../../styles/color'
 
@@ -26,6 +28,11 @@ export const ScreenContainer = styled.div`
   @media ${screenVertical3x} {
     width: 100%;
     order: 0;
+  }
+
+  @media ${screenMicroHorizontal} {
+    width: auto;
+    order: 2;
   }
 `
 
@@ -49,7 +56,14 @@ export const ScreenBorder = styled.div<{
     return css`
       background: ${colors.background};
       box-shadow: 4px 4px 12px 2px ${colors.dark},
-        -4px -4px 12px 2px ${colors.light};
+      -4px -4px 12px 2px ${colors.light};
+
+      @media ${screenMicro}, ${screenMicroHorizontal} {
+        background: none;
+        box-shadow: none;
+        border-radius: none;
+        border-top: 0;
+      }
     `
   }}
 
@@ -66,6 +80,13 @@ export const ScreenBorder = styled.div<{
   @media ${screen4x} {
     width: 640px;
     height: 576px;
+  }
+
+  @media ${screenMicroHorizontal} {
+    width: 240px;
+    height: 216px;
+    border: 8px solid hsla(0, 0%, 0%, 0);
+    border-radius: 2px;
   }
 
   ${(props) =>
@@ -212,7 +233,7 @@ export const ScreenTitle = styled.h1`
   left: 0;
   right: 0;
   margin: 0;
-  color: black;
+  color: rgba(0,0,0,0.5);
   text-align: center;
   line-height: 32px;
   font-size: 1rem;
@@ -220,6 +241,11 @@ export const ScreenTitle = styled.h1`
   font-family: sans-serif;
   font-weight: bold;
   text-transform: uppercase;
-  opacity: 0.5;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.25), -1px -1px 0 rgba(0,0,0,0.25);
+  opacity: 0.2;
   z-index: 1;
+
+  @media ${screenMicroHorizontal} {
+    display: none;
+  }
 `

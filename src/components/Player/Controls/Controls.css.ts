@@ -7,7 +7,7 @@ import {
   ControlPosition,
   ControlType,
 } from '../../../services/controls'
-import { screenVertical3x } from '../../../styles/mq'
+import { screenVertical3x, screenMicro, screenMicroHorizontal } from '../../../styles/mq'
 import { shadows } from '../../../styles/color'
 
 export const ControlsContainer = styled.div<{
@@ -26,6 +26,10 @@ export const ControlsContainer = styled.div<{
       @media ${screenVertical3x} {
         margin-left: 48px;
       }
+
+      @media ${screenMicroHorizontal} {
+        margin-left: 4px;
+      }
     `}
 
   ${(props) =>
@@ -36,6 +40,10 @@ export const ControlsContainer = styled.div<{
       @media ${screenVertical3x} {
         margin-right: 48px;
       }
+
+      @media ${screenMicroHorizontal} {
+        margin-right: 4px;
+      }
     `}
 
   ${(props) =>
@@ -45,6 +53,10 @@ export const ControlsContainer = styled.div<{
       align-self: center;
       margin: 0 auto;
       width: 100%;
+
+      @media ${screenMicro} {
+        margin-bottom: 1rem;
+      }
     `}
 
   @media (min-width: 636px) {
