@@ -2,8 +2,12 @@ import * as React from 'react'
 import _ from 'lodash'
 
 import { usePlayer } from '../../../services/player'
+import { loadFileFromUrl } from '../../../utils/file'
 import FileInput from '../FileInput'
 import { MenuSelect } from '../AppMenu.css'
+import { games } from '../../../games.json'
+
+const builtInGames = games.map(({ name }) => name)
 
 const GameSelect = ({
   selectedGame,
@@ -25,9 +29,10 @@ const GameSelect = ({
 
       playerRef.current.getStorageKeys().then((keys) => {
         const previousAvailableGames = availableGames
-        const games = keys
+        const games = _.uniq(keys
           .filter((key) => key.indexOf('ROM_') === 0)
           .map((key) => key.slice('ROM_'.length))
+          .concat(builtInGames))
         setAvailableGames(games)
         setReady(true)
 
@@ -50,7 +55,18 @@ const GameSelect = ({
         throw new Error('Missing GameBoyPlayer instance')
       }
 
-      playerRef.current.loadROM(selectedGame).then(openROM)
+      playerRef.current.getStorageKeys().then((keys) => {
+        if (keys.includes(`ROM_${selectedGame}`)) {
+          playerRef.current?.loadROM(selectedGame).then(openROM)
+        } else {
+          if (builtInGames.includes(selectedGame)) {
+            const { url } = games.find(({name}) => name == selectedGame)
+            loadFileFromUrl(url).then((file) => {
+              openROM(file).then(updateAvailableGames)
+            })
+          }
+        }
+      })
     }
   }, [selectedGame])
 
