@@ -27,68 +27,83 @@ export const ControlsProvider = ({ children }: { children: JSX.Element }): JSX.E
     {}
   ) as ControlsContextValue['groupRefs']
   const [touches, setTouches] = React.useState([] as Touch[])
+  const [mouseDown, setMouseDown] = React.useState(false)
+  const [mouseEvent, setMouseEvent] = React.useState(null as MouseEvent | null)
   const [keysDown, setKeysDown] = React.useState([] as KeyboardEvent['code'][])
   const [pressed, setPressed] = React.useState([] as string[])
+
+  // Callback for determining pressed buttons for position-based input events (mouse or touch)
+  const getPressedControlsForEvent = React.useCallback(({ clientX, clientY }) => {
+    const arr = []
+
+    const eventCircle = new SAT.Circle(new SAT.Vector(clientX, clientY), 25)
+
+    for (let j = 0; j < controlsConfig.length; j++) {
+      const g = controlsConfig[j]
+      const gRef = groupRefs[g.group].current
+
+      if (!gRef) {
+        continue
+      }
+
+      // TODO: Update to use bounding boxes of ControlOutline elements
+      const gInner = gRef.firstElementChild
+      if (!gInner) {
+        throw new Error('Control group missing children')
+      }
+
+      const gControls = g.controls
+      const gBB = gInner.getBoundingClientRect()
+      const gX = gBB.x
+      const gY = gBB.y
+
+      for (let k = 0; k < gControls.length; k++) {
+        const btn = gControls[k]
+        const btnX = gX + btn.pos.x / 2
+        const btnY = gY + btn.pos.y / 2
+
+        if (btn.type === ControlType.Circle) {
+          const btnR = btn.pos.r / 2
+
+          const btnCircle = new SAT.Circle(new SAT.Vector(btnX, btnY), btnR)
+          const isPressed = SAT.testCircleCircle(eventCircle, btnCircle)
+          if (isPressed) {
+            arr.push(btn.name)
+          }
+        } else if (btn.type === ControlType.Pill) {
+          const btnRect = new SAT.Box(
+            new SAT.Vector(btnX, btnY),
+            btn.pos.w / 2,
+            btn.pos.h / 2
+          ).toPolygon()
+          const isPressed = SAT.testPolygonCircle(btnRect, eventCircle)
+          if (isPressed) {
+            arr.push(btn.name)
+          }
+        }
+      }
+    }
+
+    return arr
+  }, [groupRefs])
 
   // Update pressed controls based on current touches and keys down
   React.useEffect(() => {
     const touchPressedControls = touches.reduce((arr, t) => {
-      const tX = t.clientX
-      const tY = t.clientY
-      const tCircle = new SAT.Circle(new SAT.Vector(tX, tY), 25)
+      arr.push(...getPressedControlsForEvent(t))
 
-      for (let j = 0; j < controlsConfig.length; j++) {
-        const g = controlsConfig[j]
-        const gRef = groupRefs[g.group].current
-
-        if (!gRef) {
-          continue
-        }
-
-        // TODO: Update to use bounding boxes of ControlOutline elements
-        const gInner = gRef.firstElementChild
-        if (!gInner) {
-          throw new Error('Control group missing children')
-        }
-
-        const gControls = g.controls
-        const gBB = gInner.getBoundingClientRect()
-        const gX = gBB.x
-        const gY = gBB.y
-
-        for (let k = 0; k < gControls.length; k++) {
-          const btn = gControls[k]
-          const btnX = gX + btn.pos.x / 2
-          const btnY = gY + btn.pos.y / 2
-
-          if (btn.type === ControlType.Circle) {
-            const btnR = btn.pos.r / 2
-
-            const btnCircle = new SAT.Circle(new SAT.Vector(btnX, btnY), btnR)
-            const isPressed = SAT.testCircleCircle(tCircle, btnCircle)
-            if (isPressed) {
-              arr.push(btn.name)
-            }
-          } else if (btn.type === ControlType.Pill) {
-            const btnRect = new SAT.Box(
-              new SAT.Vector(btnX, btnY),
-              btn.pos.w / 2,
-              btn.pos.h / 2
-            ).toPolygon()
-            const isPressed = SAT.testPolygonCircle(btnRect, tCircle)
-            if (isPressed) {
-              arr.push(btn.name)
-            }
-          }
-        }
-      }
-
-      return arr
+      return arr;
     }, [] as string[])
 
     const keyPressedControls = keysDown.map((keyCode) => keyboardMap[keyCode])
 
-    const nextPressed = _.uniq(touchPressedControls.concat(keyPressedControls))
+    const mousePressedControls = []
+
+    if (mouseDown && mouseEvent !== null) {
+      mousePressedControls.push(...getPressedControlsForEvent(mouseEvent))
+    }
+
+    const nextPressed = _.uniq(touchPressedControls.concat(keyPressedControls).concat(mousePressedControls))
 
     // Call player APIs to press/unpress buttons on changes
     if (playerRef.current && !_.isEqual(nextPressed, pressed)) {
@@ -101,7 +116,7 @@ export const ControlsProvider = ({ children }: { children: JSX.Element }): JSX.E
     }
 
     setPressed(nextPressed)
-  }, [touches, keysDown])
+  }, [touches, keysDown, mouseEvent, mouseDown])
 
   // Handle touch start events
   const onTouchStart = React.useCallback((event) => {
@@ -152,6 +167,20 @@ export const ControlsProvider = ({ children }: { children: JSX.Element }): JSX.E
     })
   }, [])
 
+  const onMouseDown = React.useCallback((event) => {
+    setMouseEvent(event)
+    setMouseDown(true)
+  }, [])
+
+  const onMouseMove = React.useCallback((event) => {
+    setMouseEvent(event)
+  }, [])
+
+  const onMouseUp = React.useCallback((event) => {
+    setMouseEvent(event)
+    setMouseDown(false)
+  }, [])
+
   // Handle key down events
   const onKeyDown = React.useCallback((event) => {
     setKeysDown((currentKeysDown) =>
@@ -186,6 +215,10 @@ export const ControlsProvider = ({ children }: { children: JSX.Element }): JSX.E
     window.addEventListener('keydown', onKeyDown)
     window.addEventListener('keyup', onKeyUp)
     window.addEventListener('resize', onResize)
+
+    window.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
 
     window.addEventListener('gesturestart', cancelGesture)
     window.addEventListener('gestureend', cancelGesture)
