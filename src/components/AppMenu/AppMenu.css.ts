@@ -119,6 +119,15 @@ export const MenuGroup = styled.div<{
           ${MenuInput} {
             margin: 0 0.5rem;
           }
+          
+          ${MenuButton} {
+            margin-left: 0.25rem;
+          
+            &:first-child {
+              margin-left: 0;
+              margin-right: 0.25rem;
+            }
+          }
         `
       : css`
           ${MenuInput}, ${MenuButton} {

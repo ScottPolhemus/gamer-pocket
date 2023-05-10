@@ -1,8 +1,36 @@
 {
   "games": [
     {
-      "name": "DRYMOUTH",
-      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/DRYMOUTH.GB?v=1671946847571"
+      "name": "ASTEROIDS",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Asteroids.gbc?v=1683755783097"
+    },
+    {
+      "name": "FROGGER",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Frogger.gbc?v=1683755787040"
+    },
+    {
+      "name": "DONKEY KONG",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Donkey%20Kong.gb?v=1683755784947"
+    },
+    {
+      "name": "MARIO DELUX",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Super%20Mario%20Bros.%20Deluxe.gbc?v=1683754959063"
+    },
+    {
+      "name": "MARIO GOLF",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Mario%20Golf.gbc?v=1683755691323"
+    },
+    {
+      "name": "POKEMONPINB",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Pokemon%20Pinball%20(USA).gbc?v=1683756124693"
+    },
+    {
+      "name": "TETRIS DX",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Tetris%20DX.gbc?v=1683754987073"
+    },
+    {
+      "name": "ZELDA",
+      "url": "https://cdn.glitch.global/23b5460c-e0ea-4fce-aa94-e3f9e8d11b58/Legend%20of%20Zelda%2C%20The%20-%20Link's%20Awakening%20DX.gbc?v=1683755539163"
     }
   ]
 }
