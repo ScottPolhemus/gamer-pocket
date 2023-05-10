@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { usePlayer } from '../../../services/player'
-import { MenuButton, MenuGroup } from '../AppMenu.css'
+import { MenuTitle, MenuButton, MenuGroup } from '../AppMenu.css'
 import GameSelect from './GameSelect'
 
 const SelectGame = (): JSX.Element => {
@@ -17,6 +17,9 @@ const SelectGame = (): JSX.Element => {
           setSelectedGame={setSelectedGame}
         />
       </MenuGroup>
+      {!!(initialized && selectedGame && !loadedGame) && (
+        <MenuTitle>Loading...</MenuTitle>
+      )}
       {!!(initialized && selectedGame && loadedGame) && (
         <MenuGroup horizontal>
           <>
